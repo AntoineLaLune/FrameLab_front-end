@@ -1,11 +1,170 @@
-<script setup></script>
+<script setup>
+import Header from './containers/Header.vue'
+
+import { RouterView } from 'vue-router';
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+	<Header/>
+	<RouterView />
 </template>
 
-<style scoped></style>
+<style> /* Global CSS by me (AntoineLaLune) */
+
+:root {
+	--dark-gray: #2C2C2C;
+	--dark-gray-dim: #3C3C3C;
+	--light-gray: #e4e4e4;
+}
+
+html {
+	/* Not to harsh white background */
+	background-color: var(--light-gray);
+}
+
+* {
+	/* Default font */
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+	/* Border color */
+	border-color: black;
+	border-style: solid;
+	border-width: 0px;
+}
+
+button {
+	color: white;
+	padding: 8px;
+	background-color: var(--dark-gray);
+	width: 100%;
+	border-width: 2px;
+	cursor: pointer;
+}
+button:hover {
+	background-color: var(--dark-gray-dim);
+}
+label {
+	color: gray;
+}
+input {
+	color: white;
+	padding: 8px;
+	background-color: var(--dark-gray);
+	border-width: 2px;
+}
+input:hover {
+	background-color: var(--dark-gray-dim);
+}
+input:focus {
+	outline-style: dashed;
+	outline-color: white;
+	border-width: 0px;
+	outline-width: 2px;
+}
+
+textarea {
+    display: flex;
+    justify-content: start;
+
+	border-width: 2px;
+
+    width: 100% !important;
+    background-color: var(--dark-gray);
+    color: white;
+
+    outline: 0px;
+}
+textarea:hover {
+	background-color: var(--dark-gray-dim);
+}
+textarea:focus {
+	outline-style: dashed;
+	outline-color: white;
+	border-width: 0px;
+	outline-width: 2px;
+}
+
+.cursor {
+	cursor: pointer;
+}
+.bold {
+	font-weight: bold;
+}
+.not-bold {
+	font-weight: normal;
+}
+
+.warning {
+		color: red;
+		text-align: center;
+		padding: 10px 20px;
+}
+.low-warning {
+		color: lightcoral;
+		text-align: center;
+		padding: 10px 20px;
+}
+.text-center {
+		text-align: center;
+}
+
+</style>
+
+<style> /* Global CSS Reset from https://www.joshwcomeau.com/css/custom-css-reset/ */
+
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+*:not(dialog) {
+	margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		interpolate-size: allow-keywords;
+	}
+}
+
+body {
+	/* 4. Add accessible line-height */
+	line-height: 1.5;
+	/* 5. Improve text rendering */
+	-webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img, picture, video, canvas, svg {
+	display: block;
+	max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input, button, textarea, select {
+	font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+	overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+	text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+	text-wrap: balance;
+}
+
+/*
+	10. Create a root stacking context
+*/
+#root, #__next {
+	isolation: isolate;
+}
+
+</style>
