@@ -16,6 +16,6 @@ Le Front-end de FrameLab.
 
 ---
 
-### Note
+## Note
 
 D'autres **informations** sont **disponibles** sur le fichier `README.md` du dépôt back-end.
