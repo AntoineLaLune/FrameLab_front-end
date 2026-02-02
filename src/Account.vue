@@ -89,6 +89,11 @@ async function submit() {
 		
 	isValid.value = "Oups, quelque chose c'est mal passé...";
 }
+
+async function logout() {
+	console.log("Peut être, peut être pas.")
+}
+
 </script>
 
 <template>
@@ -129,6 +134,9 @@ async function submit() {
 			<div v-bind:class="{ 'bottom' : true }">
 				<div v-bind:class="{ 'botton-section' : true }">
 					<button v-on:click="submit" type="submit">Modifier</button>
+				</div>
+				<div v-bind:class="{ 'botton-section' : true }">
+					<button v-on:click="logout">Se déconnecter</button>
 				</div>
 				<div v-bind:class="{ 'is-valid-section' : true }">
 					<p v-bind:class="{ 'low-warning' : true }">{{ isValid }}</p>

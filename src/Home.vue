@@ -16,6 +16,12 @@ onMounted(async()=>{
 	const archiveResponse = await fetch("/api/challenge/archive")
 	const archiveData = await archiveResponse.json();
 	archiveChallenge.value = archiveData.challenge;
+	if (currentData.challenge == undefined) {
+		document.getElementById("current_challenge_loading").textContent="Aucun challenge disponible.";
+	}
+	if (archiveData.challenge == undefined) {
+		document.getElementById("archive_challenge_loading").textContent="Aucun challenge disponible.";
+	}
 })
 </script>
 
@@ -31,7 +37,7 @@ onMounted(async()=>{
 			<Participation_Container/>
 		</div>
 		<div v-else v-bind:class="{ 'challenge-container': true }">
-			<p>Chargement...</p>
+			<p id="current_challenge_loading">Chargement...</p>
 		</div>
 		
 		<!-- Ancien Challenges -->
@@ -42,7 +48,7 @@ onMounted(async()=>{
 			<Challenge_Container v-bind:challenge="challenge"/>
 		</div>
 		<div v-else>
-			<p>Chargement...</p>
+			<p id="archive_challenge_loading">Chargement...</p>
 		</div>
 	</body>
 	

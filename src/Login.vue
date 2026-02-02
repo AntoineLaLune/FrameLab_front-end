@@ -6,6 +6,14 @@ const isValid = ref("")
 const email = ref("")
 const password = ref("")
 
+document.addEventListener("keypress", logKey);
+
+function logKey(e) {
+	if (e.key=="Enter") {
+		submit();
+	}
+}
+
 async function submit() {
 	const response = await fetch("/api/auth/login", {
 		method: "POST",
@@ -38,7 +46,7 @@ async function submit() {
 			<div v-bind:class="{ 'login-container' : true}">
 				<div v-bind:class="{ 'top' : true }">
 					<div>
-						<h1><span>FrameLab</span><span v-bind:class="{ 'not-bold' : true}">Compte</span></h1>
+						<h1><span>FrameLab</span><span v-bind:class="{ 'not-bold' : true }">Compte</span></h1>
 					</div>
 					<div>
 						<p>Connexion et Inscription</p>
@@ -48,17 +56,17 @@ async function submit() {
 					<div v-bind:class="{ 'input-section' : true }">
 						<div v-bind:class="{ 'email-input-section' : true }">
 							<label>Email</label>
-							<input v-model="email" type="text" name="email" />
+							<input v-on:keypress="" v-bind:id="{ 'email_input' : true }" v-model="email" type="text" name="email" />
 						</div>
 						<div v-bind:class="{ 'password-input-section' : true }">
 							<label>Mot de passe</label>
-							<input v-model="password" type="password" name="password" />
+							<input v-bind:id="{ 'password_input' : true }" v-model="password" type="password" name="password" />
 						</div>
 					</div>
 				</div>
 				<div v-bind:class="{ 'bottom' : true }">
 					<div v-bind:class="{ 'botton-section' : true }">
-						<button v-on:click="submit" type="submit">Valider</button>
+						<button v-bind:id="{ 'button' : true }" v-on:click="submit" type="submit">Valider</button>
 					</div>
 					<div v-bind:class="{ 'is-valid-section' : true }">
 						<p v-bind:class="{ 'low-warning' : true }">{{ isValid }}</p>
@@ -142,7 +150,7 @@ async function submit() {
 	padding: 10px 20px; /* horizontal / vertical */
 }
 
-.botton-section {
+.button-section {
 	padding: 10px 20px; /* horizontal / vertical */
 }
 
