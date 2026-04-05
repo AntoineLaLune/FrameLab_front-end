@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { reactive } from "vue";
-import Challenge_Admin_Container from "./containers/Challenge_Admin_Container.vue";
+import Challenge_Admin_Container from "./components/Challenge_Admin_Container.vue";
 
 function formatDate(dateString) {
   if (!dateString) return ''
