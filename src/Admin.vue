@@ -3,6 +3,8 @@ import { ref } from "vue";
 import { reactive } from "vue";
 import Challenge_Admin_Container from "./components/Challenge_Admin_Container.vue";
 
+import * as apiCall from "./utils/apiCall.ts";
+
 function formatDate(dateString) {
   if (!dateString) return ''
   const date = new Date(dateString)
@@ -27,25 +29,11 @@ async function fileChange(event) {
 }
 
 async function submit() {
-	let response = await fetch("/api/auth/session", {
-		method: "GET",
-		headers: { 'Content-Type' : "application/json" },
-	}); let data = await response.json();
+	const data = await apiCall.getSession();
 
 	creatorId = data.id;
 
-	const formData = new FormData()
-	formData.append("title", title.value)
-	formData.append("description", description.value)
-	formData.append("photoUrl", file.value)
-	formData.append("startDate", startDate.value)
-	formData.append("endDate", endDate.value)
-	formData.append("creatorId", creatorId)
-	response = await fetch("/api/create_challenge", {
-		method: "POST",
-		// headers: { 'Content-Type' : "multipart/form-data" },
-		body: formData
-	});  data = await response.json();
+	apiCall.postChallenge(title.value, description.value, file.value, startDate.value, endDate.value, creatorId);
 }
 </script>
 

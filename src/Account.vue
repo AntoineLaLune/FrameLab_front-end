@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import { reactive } from "vue";
 
+import * as apiCall from "./utils/apiCall.ts";
+
 const isValid = ref("");
 const lastName = ref("");
 const firstName = ref("");
@@ -11,12 +13,10 @@ const password = ref("");
 const oldPassword = ref("");
 
 window.onload = async function() { // Check si un compte est connecté
-	const response = await fetch("/api/auth/session", {
-		method: "GET",
-		headers: { 'Content-Type' : "application/json" },
-	}); const data = await response.json();
+	const data = await apiCall.getSession();
 
-	if (data.success == false) {
+
+	if (data == undefined) {
 		if (data.message == "Session non reçus.") {
 			document.location.href="/login";
 		}

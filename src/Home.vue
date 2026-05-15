@@ -58,10 +58,6 @@ onMounted(async () => {
       <div
         class="vertical-scroll-container"
       >
-        <Participation_Container v-bind:participation="participation" />
-        <Participation_Container v-bind:participation="participation" />
-        <Participation_Container v-bind:participation="participation" />
-        <Participation_Container v-bind:participation="participation" />
       </div>
     </div>
     <p>{{ archiveStatus }}</p>

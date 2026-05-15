@@ -5,13 +5,12 @@ const account = ref("");
 const accountId = ref("");
 const ifDisconect = ref("");
 
-window.onload = async function() { // Check si un compte est connecté
-	const response = await fetch("/api/auth/session", {
-		method: "GET",
-		headers: { 'Content-Type' : "application/json" },
-	}); const data = await response.json();
+import * as apiCall from "./../utils/apiCall.ts";
 
-	if (data.success == false) {
+window.onload = async function() { // Check si un compte est connecté
+	const data = await apiCall.getSession();
+
+	if (data == undefined) {
 		account.value = "";
 		accountId.value = "";
 		ifDisconect.value = "Connectez votre ";
