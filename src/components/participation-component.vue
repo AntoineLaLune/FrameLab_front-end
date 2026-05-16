@@ -1,26 +1,26 @@
 <script setup>
-  import { ref } from "vue";
+	import { ref } from "vue";
 
-  defineProps(["participation"]);
+	defineProps(["participation"]);
 
-  const isValid = ref("");
-  const creativityNote = ref(1);
-  const technicalNote = ref(1);
-  const respectNote = ref(1);
+	const isValid = ref("");
+	const creativityNote = ref(1);
+	const technicalNote = ref(1);
+	const respectNote = ref(1);
 
-  const validNoteNumber = [1, 2, 3, 4, 5];
+	const validNoteNumber = [1, 2, 3, 4, 5];
 
-  function checkNoteNumber(note) {
-  		for (let i = 0; i < validNoteNumber.length; i++) {
-  				console.log(note);
-  				console.log(note == validNoteNumber[i]);
-  				if (note == validNoteNumber[i]) {
-  						isValid.value = "";
-  						return;
-  				}
-  		}
-  		isValid.value = "La note doit être comprise entre 1 et 5.";
-  }
+	function checkNoteNumber(note) {
+			for (let i = 0; i < validNoteNumber.length; i++) {
+					console.log(note);
+					console.log(note == validNoteNumber[i]);
+					if (note == validNoteNumber[i]) {
+							isValid.value = "";
+							return;
+					}
+			}
+			isValid.value = "La note doit être comprise entre 1 et 5.";
+	}
 
 </script>
 
@@ -76,50 +76,50 @@
 
 <style scoped>
 
-  .participation-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	.participation-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
-    height:100%;
+	height: calc(100% - 20px);
 
-    padding: 10px 20px;
-    border-width: 2px;
+	padding: 10px 20px;
+	border-width: 2px;
 
-    margin: 10px;
-  }
+	margin: 10px;
+	}
 
-  .top {
-  	text-align: start;
-  	padding: 10px 0px; /* horizontal / vertical */
-  }
+	.top {
+		text-align: start;
+		padding: 10px 0px; /* horizontal / vertical */
+	}
 
-  .center {
-  	display: flex;
-  	flex-direction: column;
-  	justify-content: center;
-  	text-align: center;
-  	padding: 10px 0px; /* horizontal / vertical */
-  }
+	.center {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+		padding: 10px 0px; /* horizontal / vertical */
+	}
 
-  .vote-section {
-  	display: flex;
-  	justify-content: space-between;
-  	align-items: center;
-  	height: 100%;
-  	bottom: 0;
-  	padding: 10px 0px; /* horizontal / vertical */
-  }
+	.vote-section {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 100%;
+		bottom: 0;
+		padding: 10px 0px; /* horizontal / vertical */
+	}
 
-  .single-vote-section {
-  	align-items: center;
-  	margin-inline: 10px;
-  }
+	.single-vote-section {
+		align-items: center;
+		margin-inline: 10px;
+	}
 
-  img {
-    display: block;
-    max-width: 512px;
-    max-height: 512px;
-  }
+	img {
+	display: block;
+	max-width: 512px;
+	max-height: 512px;
+	}
 
 </style>

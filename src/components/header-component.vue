@@ -1,0 +1,125 @@
+<script setup>
+
+	import { ref, watch } from "vue";
+
+	const { userData } = defineProps({
+		userData: Object,
+	});
+
+	const account = ref("");
+	const accountId = ref("");
+	const ifDisconect = ref("");
+
+	// Check if the user is connected
+	watch(
+		() => userData,
+		(newUserData) => {
+			if (newUserData == undefined || newUserData == null) {
+				account.value = "";
+				accountId.value = "";
+				ifDisconect.value = "Connectez votre ";
+			} else {
+				account.value = newUserData.first_name;
+				accountId.value = newUserData.id;
+				ifDisconect.value = "";
+			}
+		},
+		{ immediate: true },
+	);
+
+	import * as apiCall from "./../utils/apiCall.ts";
+	import { onMounted } from "vue";
+	import { useRoute, useRouter } from "vue-router";
+
+	const route = useRoute();
+	const router = useRouter();
+	const challengeData = ref({});
+	const urlParams = new URLSearchParams(window.location.search);
+	const challengeId = urlParams.get("id");
+
+	// Check if the Challenge page is loaded
+	onMounted(async () => {
+		await router.isReady();
+		if (route.path == "/challenge") {
+			challengeData.value = await apiCall.getChallenge(challengeId);
+		}
+	});
+
+	function redirectAccount() {
+		document.location.href = "/account";
+	}
+	function redirectHome() {
+		document.location.href = "/";
+	}
+
+</script>
+
+
+
+<template>
+
+	<div class="header">
+		<div class="hybrid">
+			<h1 class="cursor" v-on:click="redirectHome">
+				FrameLab
+				<div v-if="route.path == '/challenge'">
+					<span>{{ challengeData.title }}</span
+					><span class="not-bold" v-if="challengeData != null"
+						>Challenge</span
+					>
+				</div>
+			</h1>
+			<div v-if="route.path == '/challenge'">
+				<img
+					v-bind:src="`/uploads${challengeData.photo_url}`"
+					alt="Challenge Theme Image"
+				/>
+			</div>
+		</div>
+
+		<div class="=profile-zone, cursor" v-on:click="redirectAccount">
+			<h2>
+				<span>{{ ifDisconect }}Utilisateur{{ accountId }}</span
+				><span class="not-bold">{{ account }}</span>
+			</h2>
+		</div>
+	</div>
+
+</template>
+
+
+
+<style scoped>
+
+	.header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px 20px;
+
+		border-bottom-width: 2px;
+	}
+
+	.hybrid {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.profile-zone {
+		display: flex;
+		flex-direction: row;
+		justify-content: end;
+		text-align: end;
+	}
+
+	img {
+		display: block;
+		height: 96px;
+
+		padding-left: 24px;
+	}
+
+</style>

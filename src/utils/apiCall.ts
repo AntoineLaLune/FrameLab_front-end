@@ -27,8 +27,14 @@ const data = await response.json();
 return data.participations;
 }
 
+export async function getUserParticipation(user_id: number, challenge_id: number) {
+  const response = await fetch("/api/participations?user_id=" + user_id + "&challenge_id=" + challenge_id);
+  const data = await response.json();
+	return data.participations[0];
+}
+
 export async function getSession() {
-	const response = await fetch("/api/auth/session", { // @TODO ← Les get session avec apiCall, pas ailleur (Recherge global / projet, tape "/api/auth/session")
+	const response = await fetch("/api/auth/session", {
 		method: "GET",
 		headers: { 'Content-Type' : "application/json" },
 	});
@@ -38,6 +44,19 @@ export async function getSession() {
 	} else {
 		return undefined;
 	}
+}
+
+export async function login(email: string, password: string) {
+	const response = await fetch("/api/auth/login", {
+		method: "POST",
+		headers: { 'Content-Type' : "application/json" },
+		body: JSON.stringify({
+			email : email,
+			password : password
+		})
+	});
+	const data = await response.json();
+	return data;
 }
 
 export async function postChallenge(title:string, description:string, file:any, startDate:string, endDate:string, id:string) {
