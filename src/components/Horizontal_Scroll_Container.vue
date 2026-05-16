@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-import { reactive } from "vue";
+  import { ref } from "vue";
+  import { reactive } from "vue";
 </script>
 
 <template>
@@ -10,8 +10,8 @@ import { reactive } from "vue";
 </template>
 
 <style scoped>
-.horizontal-scroll-container {
-	display: flex;
-	overflow-x: auto;
-}
+  .horizontal-scroll-container {
+  	display: flex;
+  	overflow-x: auto;
+  }
 </style>

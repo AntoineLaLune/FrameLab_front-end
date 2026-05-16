@@ -1,98 +1,95 @@
 <script setup>
-import { ref } from "vue";
-import { reactive } from "vue";
+  import { ref } from "vue";
+  import { reactive } from "vue";
 
-import * as apiCall from "./utils/apiCall.ts";
+  import * as apiCall from "./utils/apiCall.ts";
 
-const isValid = ref("");
-const lastName = ref("");
-const firstName = ref("");
-const email = ref("");
-const oldEmail = ref("");
-const password = ref("");
-const oldPassword = ref("");
+  const isValid = ref("");
+  const lastName = ref("");
+  const firstName = ref("");
+  const email = ref("");
+  const oldEmail = ref("");
+  const password = ref("");
+  const oldPassword = ref("");
 
-window.onload = async function() { // Check si un compte est connecté
-	const data = await apiCall.getSession();
+  window.onload = async function() { // Check si un compte est connecté
+  	const data = await apiCall.getSession();
 
+    if (data == undefined) {
+      document.location.href="/login";
+    }
 
-	if (data == undefined) {
-		if (data.message == "Session non reçus.") {
-			document.location.href="/login";
-		}
-	}
+  	lastName.value = data.last_name;
+  	firstName.value = data.first_name;
+  	email.value = data.email;
+  	oldEmail.value = data.email;
+  }
 
-	lastName.value = data.last_name;
-	firstName.value = data.first_name;
-	email.value = data.email;
-	oldEmail.value = data.email;
-}
-
-async function submit() {
-	if (password.value == null || password.value == "") {
-		const response = await fetch("/api/users/edit", {
-			method: "PUT",
-			headers: { 'Content-Type' : "application/json" },
-			body: JSON.stringify({
-				newLastName : lastName.value,
-				newFirstName : firstName.value,
-				newEmail : email.value,
-				email : oldEmail.value,
-				password : oldPassword.value
-			})
-		}); const data = await response.json();
+  async function submit() {
+  	if (password.value == null || password.value == "") {
+  		const response = await fetch("/api/users/edit", {
+  			method: "PUT",
+  			headers: { 'Content-Type' : "application/json" },
+  			body: JSON.stringify({
+  				newLastName : lastName.value,
+  				newFirstName : firstName.value,
+  				newEmail : email.value,
+  				email : oldEmail.value,
+  				password : oldPassword.value
+  			})
+  		}); const data = await response.json();
 
 
-		isValid.value = "";
+  		isValid.value = "";
 
-		console.log("vvvvv"+data.success)
+  		console.log("vvvvv"+data.success)
 
 
-		if (data.success == false) {
-			isValid.value = data.message; 		
-			return;
-		} else {
-			isValid.value = "Changement effectué avec succès."
-			return;
-		}
-	}
-	if (password.value !== null && password.value !== "") {
-		const response = await fetch("/api/users/edit_with_password", {
-			method: "PUT",
-			headers: { 'Content-Type' : "application/json" },
-			body: JSON.stringify({
-				newLastName : lastName.value,
-				newFirstName : firstName.value,
-				newEmail : email.value,
-				email : oldEmail.value,
-				newPassword : password.value,
-				password : oldPassword.value
-			})
-		}); const data = await response.json();
+  		if (data.success == false) {
+  			isValid.value = data.message;
+  			return;
+  		} else {
+  			isValid.value = "Changement effectué avec succès."
+  			return;
+  		}
+  	}
+  	if (password.value !== null && password.value !== "") {
+  		const response = await fetch("/api/users/edit_with_password", {
+  			method: "PUT",
+  			headers: { 'Content-Type' : "application/json" },
+  			body: JSON.stringify({
+  				newLastName : lastName.value,
+  				newFirstName : firstName.value,
+  				newEmail : email.value,
+  				email : oldEmail.value,
+  				newPassword : password.value,
+  				password : oldPassword.value
+  			})
+  		}); const data = await response.json();
 
-		isValid.value = "";
+  		isValid.value = "";
 
-		if (data.success == false) {
-			if (data.message == "L'adresse email n'existe pas." ||
-			data.message == "L'adresse email est déjà utilisé." ||
-			data.message == "Le mot de passe est invalide.") {
-				isValid.value = data.message; 		
-				return;
-			}
-			isValid.value = "Oups, quelque chose c'est mal passé !";
-			return;
-		} else {
-			isValid.value = "Changement effectué avec succès."
-			return;
-		}
-	}
-		
-	isValid.value = "Oups, quelque chose c'est mal passé...";
-}
+  		if (data.success == false) {
+  			if (data.message == "L'adresse email n'existe pas." ||
+  			data.message == "L'adresse email est déjà utilisé." ||
+  			data.message == "Le mot de passe est invalide.") {
+  				isValid.value = data.message;
+  				return;
+  			}
+  			isValid.value = "Oups, quelque chose c'est mal passé !";
+  			return;
+  		} else {
+  			isValid.value = "Changement effectué avec succès."
+  			return;
+  		}
+  	}
 
-async function logout() {
-	console.log("Peut être, peut être pas.")
-}
+  	isValid.value = "Oups, quelque chose c'est mal passé...";
+  }
+
+  async function logout() {
+  	console.log("Peut être, peut être pas.") // @TODO
+  }
 
 </script>
 
@@ -147,60 +144,60 @@ async function logout() {
 </template>
 
 <style scoped>
-.account-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100%;
-	width: 100%;
-	align-items: center;
-	padding: 10px 20px;
-	text-align: center;
-}
+  .account-container {
+  	display: flex;
+  	flex-direction: column;
+  	justify-content: center;
+  	height: 100%;
+  	width: 100%;
+  	align-items: center;
+  	padding: 10px 20px;
+  	text-align: center;
+  }
 
-.top {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	align-items: end;
-	padding: 10px 20px;
-	text-align: center;
-}
+  .top {
+  	display: flex;
+  	justify-content: space-between;
+  	width: 100%;
+  	align-items: end;
+  	padding: 10px 20px;
+  	text-align: center;
+  }
 
-.center {
-	padding: 10px 20px; /* horizontal / vertical */
-	text-align: center;
-	width: 100%;
-}
+  .center {
+  	padding: 10px 20px; /* horizontal / vertical */
+  	text-align: center;
+  	width: 100%;
+  }
 
-.bottom {
-	padding: 10px 20px; /* horizontal / vertical */
-	width: 100%;
-}
+  .bottom {
+  	padding: 10px 20px; /* horizontal / vertical */
+  	width: 100%;
+  }
 
-.input-section {
+  .input-section {
 
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 100%;
+  	display: flex;
+  	flex-direction: column;
+  	justify-content: space-between;
+  	width: 100%;
 
-	
-	* {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		text-align: start;
-		width: 100%;
-	}
-}
 
-.is-valid-section {
-	padding: 10px 20px; /* horizontal / vertical */
-}
+  	* {
+  		display: flex;
+  		flex-direction: column;
+  		justify-content: center;
+  		text-align: start;
+  		width: 100%;
+  	}
+  }
 
-.botton-section {
-	padding: 10px 20px; /* horizontal / vertical */
-}
+  .is-valid-section {
+  	padding: 10px 20px; /* horizontal / vertical */
+  }
+
+  .botton-section {
+  	padding: 10px 20px; /* horizontal / vertical */
+  }
 
 </style>

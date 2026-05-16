@@ -1,88 +1,94 @@
 <script setup>
-import Challenge_Container from "./components/Challenge_Container.vue";
-import Participation_Container from "./components/Participation_Container.vue";
 
-import * as apiCall from "./utils/apiCall.ts";
+  import Challenge_Container from "./components/Challenge_Container.vue";
 
-import { onMounted, ref } from "vue";
+  import * as apiCall from "./utils/apiCall.ts";
 
-const currentChallengeData = ref([]);
-const archiveChallengeData = ref([]);
-const currentStatus = ref("Chargement...");
-const archiveStatus = ref("Chargement...");
-onMounted(async () => {
-  currentChallengeData.value = await apiCall.getCurrentChallenge();
-  const archiveChallengeDataTemp = await apiCall.getRandomArchivesChallenges(10);
-    for (let i = 0; i < archiveChallengeDataTemp.length; i++) {
-        console.log(await apiCall.getRandomParticipationsByChallengeId(10, archiveChallengeDataTemp[i].id));
-      const archiveParticipationDataTemp = await apiCall.getRandomParticipationsByChallengeId(10, archiveChallengeDataTemp[i].id);
-      archiveChallengeData.value.push([archiveChallengeDataTemp[i], archiveParticipationDataTemp])
-  }
-  if (currentChallengeData.value == null || currentChallengeData.value.length == 0) {
-    currentChallenge.value = "Aucun challenge actuel disponible.";
-  } else {
-    currentChallenge.value = "";
-  }
-  if (archiveChallengeData.value == null || archiveChallengeData.value.length == 0) {
-    archiveStatus.value = "Aucun ancian challenge disponible.";
-  } else {
-    archiveStatus.value = "";
-  }
-});
+  import { onMounted, ref } from "vue";
+
+  const currentChallengeData = ref([]);
+  const archiveChallengesData = ref([]);
+  const currentStatus = ref("Chargement...");
+  const archiveStatus = ref("Chargement...");
+
+
+  onMounted(async () => {
+    currentChallengeData.value = await apiCall.getCurrentChallenge();
+    archiveChallengesData.value = await apiCall.getArchivesChallenges();
+
+    if (currentChallengeData.value == null || currentChallengeData.value.length == 0) {
+      currentStatus.value = "Aucun challenge actuel disponible.";
+    } else {
+      currentStatus.value = "";
+    }
+
+    if (archiveChallengesData.value == null || archiveChallengesData.value.length == 0) {
+      archiveStatus.value = "Aucun ancian challenge disponible.";
+    } else {
+      archiveStatus.value = "";
+    }
+  });
+
 </script>
 
+
+
 <template>
+
   <body>
     <!-- Challenge Actuel -->
-    <h2 class="not-bold">Le challenge actuel ainsi que les participations</h2>
+    <h2 class="not-bold">Le challenge actuel</h2>
     <div v-if="currentChallengeData != null">
       <div class="horizontal-scroll-container">
         <Challenge_Container v-bind:challenge="currentChallengeData" />
-        <Participation_Container />
       </div>
     </div>
-    <div v-else class="challenge-container">
+    <div v-else>
       <p>{{ currentStatus }}</p>
     </div>
 
     <!-- Anciens Challenges -->
-    <h2 class="not-bold">Les anciens challenges ainsi que de quelques participations</h2>
-    <div
-      class="horizontal-scroll-container"
-      v-for="challenge in archiveChallengeData"
-      v-bind:key="challenge.id"
-    >
-      <Challenge_Container
-        v-bind:challenge="challenge"
-      />
+    <h2 class="not-bold">Les anciens challenges</h2>
+    <div class="horizontal-scroll-container" v-if="archiveChallengesData != null">
       <div
-        class="vertical-scroll-container"
+        v-for="challenge in archiveChallengesData"
+        v-bind:key="challenge.id"
       >
+        <Challenge_Container v-bind:challenge="challenge" />
       </div>
     </div>
-    <p>{{ archiveStatus }}</p>
+    <div v-else>
+      <p>{{ archiveStatus }}</p>
+    </div>
   </body>
+
 </template>
 
+
+
 <style scoped>
-h2 {
-  padding: 10px 20px;
-  text-align: center;
-}
 
-.horizontal-scroll-container {
-  display: flex;
-  overflow-x: scroll;
-}
+  h2 {
+    padding: 10px 20px;
+    text-align: center;
+  }
 
-.vertical-scroll-container {
-  display: flex;
-  flex-direction: column;
+  .horizontal-scroll-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 
-  padding: 10px 20px;
-}
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
 
-.horizontal-scroll-container {
-  padding: 10px;
-}
+  .vertical-scroll-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
 </style>

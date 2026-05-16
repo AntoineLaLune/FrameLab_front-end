@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-import { reactive } from "vue";
+  import { ref } from "vue";
+  import { reactive } from "vue";
 </script>
 
 <template>
@@ -21,28 +21,27 @@ import { reactive } from "vue";
 </template>
 
 <style scoped>
-.challenge-container {
-		padding: 10px 20px;
-		border-width: 2px;
-}
+  .challenge-container {
+  		padding: 10px 20px;
+  		border-width: 2px;
+  }
 
-.top {
-		text-align: start;
-}
+  .top {
+  		text-align: start;
+  }
 
-.center {
-		display: flex;
-		justify-content: center;
-		text-align: center;
-}
+  .center {
+  		display: flex;
+  		justify-content: center;
+  		text-align: center;
+  }
 
-.button-section {
-	display: flex;
-	justify-content: space-between;
+  .button-section {
+  	display: flex;
+  	justify-content: space-between;
 
-	* {
-		width: 45%;
-	}
-}
+  	* {
+  		width: 45%;
+  	}
+  }
 </style>
-

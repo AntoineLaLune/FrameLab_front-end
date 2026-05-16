@@ -1,16 +1,23 @@
 <script setup>
-import { ref } from "vue";
-import { reactive } from "vue";
+  import { ref } from "vue";
+  import { reactive } from "vue";
 
-const props = defineProps(["challenge"]);
+  defineProps(["challenge"]);
+
+  function redirectChallenge(id) {
+   	document.location.href=("/challenge?id="+id);
+    }
 </script>
 
+
+
 <template>
+
   <div v-if="challenge" class="challenge-container">
     <div class="top">
       <h2>
         <span>{{ challenge.title }}</span
-        ><span class="not-bold">Challenges</span>
+        ><span class="not-bold">Challenge</span>
       </h2>
       <p>Du : {{ challenge.start_date }} au : {{ challenge.end_date }}</p>
     </div>
@@ -20,43 +27,55 @@ const props = defineProps(["challenge"]);
       </p>
       <img v-bind:src="`/uploads${challenge.photo_url}`" alt="Challenge Theme Image" />
     </div>
-    <button>Voir</button>
+    <button v-on:click="redirectChallenge(challenge.id)">Voir</button>
   </div>
   <div v-else class="challenge-container">
     <p>Chargement...</p>
   </div>
+
 </template>
 
+
+
 <style scoped>
-.challenge-container {
-  padding: 10px 20px;
-  border-width: 2px;
-}
 
-.top {
-  text-align: start;
-}
+  .challenge-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-.center {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  padding: 20px 0px 20px 0px;
+    height:100%;
 
-  width: max-content;
-}
+    padding: 10px 20px;
+    border-width: 2px;
 
-.challenge-description {
-  text-align: left;
+    margin: 10px;
+  }
 
-  width: 250px;
-}
+  .top {
+    text-align: start;
+  }
 
-img {
-  display: block;
-  max-width: 512px;
-  max-height: 512px;
-  width: auto;
-  height: auto;
-}
+  .center {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 0px 20px 0px;
+
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .challenge-description {
+    text-align: left;
+
+    width: 250px;
+  }
+
+  img {
+    display: block;
+    max-width: 512px;
+    max-height: 512px;
+  }
+
 </style>

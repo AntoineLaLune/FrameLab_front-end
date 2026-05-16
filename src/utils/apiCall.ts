@@ -1,3 +1,9 @@
+export async function getChallenge(id: number) {
+	const response = await fetch("/api/challenges/" + id);
+	const data = await response.json();
+	return data.challenge;
+}
+
 export async function getCurrentChallenge() {
 	const response = await fetch("/api/challenges/current");
 	const data = await response.json();
@@ -10,35 +16,23 @@ export async function getArchiveChallenge(number: number) {
 	return data.challenges;
 }
 export async function getArchivesChallenges() {
-	const response = await fetch("/api/challenges/archives/");
+	const response = await fetch("/api/challenges/archives?rand=true&limit=10");
 	const data = await response.json();
 	return data.challenges;
 }
 
-// export async function getRandomArchivesChallenges(number: number) {
-// 	const response = await fetch("/api/challenges/archives/" + number);
-// 	const data = await response.json();
-// 	return data.challenges;
-// }
-
-// export async function getParticipationsByChallengeId(number: number, id: number) {
-// 	const response = await fetch("/participations/"+number+"/challenge_id/"+id);
-// 	const data = await response.json();
-// 	return data.participations;
-// }
-
-// export async function getRandomParticipationsByChallengeId(number: number, id: number) {
-// 	const response = await fetch("/participations/random/"+number+"/challenge_id/"+id);
-// 	const data = await response.json();
-// 	return data.participations;
-// }
+export async function getParticipationsByChallengeId(challenge_id: number) {
+const response = await fetch("/api/participations?limit=50&challenge_id=" + challenge_id);
+const data = await response.json();
+return data.participations;
+}
 
 export async function getSession() {
 	const response = await fetch("/api/auth/session", { // @TODO ← Les get session avec apiCall, pas ailleur (Recherge global / projet, tape "/api/auth/session")
 		method: "GET",
 		headers: { 'Content-Type' : "application/json" },
 	});
-	const data = await response.json();
+  const data = await response.json();
 	if (data.success == true) {
 		return data.user;
 	} else {

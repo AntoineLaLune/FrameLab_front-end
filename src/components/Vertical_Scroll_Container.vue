@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-import { reactive } from "vue";
+  import { ref } from "vue";
+  import { reactive } from "vue";
 </script>
 
 <template>
@@ -10,9 +10,9 @@ import { reactive } from "vue";
 </template>
 
 <style scoped>
-.vertical-scroll-container {
-	display: flex;
-	flex-direction: column;
-	overflow-y: auto;
-}
+  .vertical-scroll-container {
+  	display: flex;
+  	flex-direction: column;
+  	overflow-y: auto;
+  }
 </style>

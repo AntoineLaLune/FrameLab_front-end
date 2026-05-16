@@ -1,40 +1,40 @@
 <script setup>
-import { ref } from "vue";
-import { reactive } from "vue";
-import Challenge_Admin_Container from "./components/Challenge_Admin_Container.vue";
+  import { ref } from "vue";
+  import { reactive } from "vue";
+  import Challenge_Admin_Container from "./components/Challenge_Admin_Container.vue";
 
-import * as apiCall from "./utils/apiCall.ts";
+  import * as apiCall from "./utils/apiCall.ts";
 
-function formatDate(dateString) {
-  if (!dateString) return ''
-  const date = new Date(dateString)
-  return date.toLocaleDateString('fr-Fr', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
+  function formatDate(dateString) {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    return date.toLocaleDateString('fr-Fr', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  }
 
-const title = ref("");
-const description = ref("");
-const file = ref("");
-const startDate = ref("");
-const endDate = ref("");
-let creatorId;
+  const title = ref("");
+  const description = ref("");
+  const file = ref("");
+  const startDate = ref("");
+  const endDate = ref("");
+  let creatorId;
 
-async function fileChange(event) {
-	file.value = event.target.files[0]; // Prend "file" du event lisener déclangé
-}
+  async function fileChange(event) {
+  	file.value = event.target.files[0]; // Prend "file" du event lisener déclangé
+  }
 
-async function submit() {
-	const data = await apiCall.getSession();
+  async function submit() {
+  	const data = await apiCall.getSession();
 
-	creatorId = data.id;
+  	creatorId = data.id;
 
-	apiCall.postChallenge(title.value, description.value, file.value, startDate.value, endDate.value, creatorId);
-}
+  	apiCall.postChallenge(title.value, description.value, file.value, startDate.value, endDate.value, creatorId);
+  }
 </script>
 
 <template>
@@ -77,50 +77,50 @@ async function submit() {
 </template>
 
 <style scoped>
-.body {
-	display: flex;
-	height: 100%;
-}
+  .body {
+  	display: flex;
+  	height: 100%;
+  }
 
-.right-container {
-	height: 100%;
-	width: 50%;
-	padding: 10px 20px;
-	* {
-		margin-block: 10px;
-	}
-}
+  .right-container {
+  	height: 100%;
+  	width: 50%;
+  	padding: 10px 20px;
+  	* {
+  		margin-block: 10px;
+  	}
+  }
 
-.left-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100%;
-	width: 50%;
-	align-items: center;
-	padding: 10px 20px;
-	text-align: center;
-}
+  .left-container {
+  	display: flex;
+  	flex-direction: column;
+  	justify-content: center;
+  	height: 100%;
+  	width: 50%;
+  	align-items: center;
+  	padding: 10px 20px;
+  	text-align: center;
+  }
 
-.input-section {
+  .input-section {
 
-	width: 100%;
+  	width: 100%;
 
-	* {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		text-align: start;
-		width: 100%;
-	}
+  	* {
+  		display: flex;
+  		flex-direction: column;
+  		justify-content: center;
+  		text-align: start;
+  		width: 100%;
+  	}
 
-}
+  }
 
-.confirm-button {
-	padding: 10px 0px; /* horizontal / vertical */
-	* {
-		margin-block: 5px;
-	}
-}
+  .confirm-button {
+  	padding: 10px 0px; /* horizontal / vertical */
+  	* {
+  		margin-block: 5px;
+  	}
+  }
 
 </style>

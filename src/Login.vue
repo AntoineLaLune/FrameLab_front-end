@@ -1,43 +1,43 @@
 <script setup>
-import { ref } from "vue";
-import { reactive } from "vue";
+  import { ref } from "vue";
+  import { reactive } from "vue";
 
-const isValid = ref("")
-const email = ref("")
-const password = ref("")
+  const isValid = ref("")
+  const email = ref("")
+  const password = ref("")
 
-document.addEventListener("keypress", logKey);
+  document.addEventListener("keypress", logKey);
 
-function logKey(e) {
-	if (e.key=="Enter") {
-		submit();
-	}
-}
+  function logKey(e) {
+  	if (e.key=="Enter") {
+  		submit();
+  	}
+  }
 
-async function submit() {
-	const response = await fetch("/api/auth/login", {
-		method: "POST",
-		headers: { 'Content-Type' : "application/json" },
-		body: JSON.stringify({
-			email : email.value,
-			password : password.value
-		})
-	}); const data = await response.json();
+  async function submit() {
+  	const response = await fetch("/api/auth/login", {
+  		method: "POST",
+  		headers: { 'Content-Type' : "application/json" },
+  		body: JSON.stringify({
+  			email : email.value,
+  			password : password.value
+  		})
+  	}); const data = await response.json();
 
-	isValid.value = ""; 
+  	isValid.value = "";
 
-	if (data.success == false) {
-		if (data.message == "L'adresse email n'existe pas.") {
-			document.location.href="/register?email="+email.value;
-			return;
-		} else {
-			isValid.value = data.message; 		
-			return;
-		}
-	}
+  	if (data.success == false) {
+  		if (data.message == "L'adresse email n'existe pas.") {
+  			document.location.href="/register?email="+email.value;
+  			return;
+  		} else {
+  			isValid.value = data.message;
+  			return;
+  		}
+  	}
 
-	document.location.href="/";
-}
+  	document.location.href="/";
+  }
 </script>
 
 <template>
@@ -81,77 +81,77 @@ async function submit() {
 </template>
 
 <style scoped>
-.body {
-	display: flex;
-	height: 100%;
-}
+  .body {
+  	display: flex;
+  	height: 100%;
+  }
 
-.image-container {
-	height: 100%;
-	width: 50%;
-}
+  .image-container {
+  	height: 100%;
+  	width: 50%;
+  }
 
-.login-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100%;
-	width: 50%;
-	align-items: center;
-	padding: 10px 20px;
-	text-align: center;
-}
+  .login-container {
+  	display: flex;
+  	flex-direction: column;
+  	justify-content: center;
+  	height: 100%;
+  	width: 50%;
+  	align-items: center;
+  	padding: 10px 20px;
+  	text-align: center;
+  }
 
-.top {
-	padding: 10px 20px;
-	text-align: center;
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	align-items: end;
-}
+  .top {
+  	padding: 10px 20px;
+  	text-align: center;
+  	display: flex;
+  	justify-content: space-between;
+  	width: 100%;
+  	align-items: end;
+  }
 
-.center {
-	padding: 10px 20px; /* horizontal / vertical */
-	text-align: center;
-	width: 100%;
-}
+  .center {
+  	padding: 10px 20px; /* horizontal / vertical */
+  	text-align: center;
+  	width: 100%;
+  }
 
-.bottom {
-	padding: 10px 20px; /* horizontal / vertical */
-	width: 100%;
-}
+  .bottom {
+  	padding: 10px 20px; /* horizontal / vertical */
+  	width: 100%;
+  }
 
-.input-section {
+  .input-section {
 
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
+  	display: flex;
+  	justify-content: space-between;
+  	width: 100%;
 
-	
-	* {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		text-align: start;
-		width: 100%;
-	}
 
-	.email-input-section {
-		width: 45%;
-	}
+  	* {
+  		display: flex;
+  		flex-direction: column;
+  		justify-content: center;
+  		text-align: start;
+  		width: 100%;
+  	}
 
-	.password-input-section{
-		width: 45%;
-	}
-}
+  	.email-input-section {
+  		width: 45%;
+  	}
 
-.is-valid-section {
-	padding: 10px 20px; /* horizontal / vertical */
-}
+  	.password-input-section{
+  		width: 45%;
+  	}
+  }
 
-.button-section {
-	padding: 10px 20px; /* horizontal / vertical */
-}
+  .is-valid-section {
+  	padding: 10px 20px; /* horizontal / vertical */
+  }
+
+  .button-section {
+  	padding: 10px 20px; /* horizontal / vertical */
+  }
 
 </style>

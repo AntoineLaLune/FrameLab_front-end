@@ -1,55 +1,55 @@
 <script setup>
-import { ref } from "vue";
-import { reactive } from "vue";
+  import { ref } from "vue";
+  import { reactive } from "vue";
 
-const link = location.href;
-const linkEmail = link.substring(link.indexOf("?")+7);
+  const link = location.href;
+  const linkEmail = link.substring(link.indexOf("?")+7);
 
-const isValid = ref("");
-const lastName = ref("");
-const firstName = ref("");
-const email = ref("");
-const password = ref("");
+  const isValid = ref("");
+  const lastName = ref("");
+  const firstName = ref("");
+  const email = ref("");
+  const password = ref("");
 
-if (link.indexOf("?") !== -1) {
-	email.value = linkEmail;
-}
+  if (link.indexOf("?") !== -1) {
+  	email.value = linkEmail;
+  }
 
-async function submit() {
-	const response = await fetch("/api/auth/register", {
-		method: "POST",
-		headers: { 'Content-Type' : "application/json" },
-		body: JSON.stringify({
-			lastName : lastName.value,
-			firstName : firstName.value,
-			email : email.value,
-			password : password.value
-		})
-	}); const data = await response.json();
+  async function submit() {
+  	const response = await fetch("/api/auth/register", {
+  		method: "POST",
+  		headers: { 'Content-Type' : "application/json" },
+  		body: JSON.stringify({
+  			lastName : lastName.value,
+  			firstName : firstName.value,
+  			email : email.value,
+  			password : password.value
+  		})
+  	}); const data = await response.json();
 
-	isValid.value = ""; 
+  	isValid.value = "";
 
-	if (data.success == false) {
-		if (data.message == "Le format de l'adresse email est invalide.") {
-			isValid.value = data.message;
-			return;
-		}
-	}
+  	if (data.success == false) {
+  		if (data.message == "Le format de l'adresse email est invalide.") {
+  			isValid.value = data.message;
+  			return;
+  		}
+  	}
 
-	if (data.success == false) {
-		if (data.message == "Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)") {
-			isValid.value = data.message;
-			return;		
-		}
-	}
+  	if (data.success == false) {
+  		if (data.message == "Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)") {
+  			isValid.value = data.message;
+  			return;
+  		}
+  	}
 
-	if (data.success == false) {
-		isValid.value = "Oups, quelque chose c'est mal passé !";
-		return;
-	}
+  	if (data.success == false) {
+  		isValid.value = "Oups, quelque chose c'est mal passé !";
+  		return;
+  	}
 
-	document.location.href="/";
-}
+  	document.location.href="/";
+  }
 </script>
 
 <template>
@@ -101,70 +101,70 @@ async function submit() {
 </template>
 
 <style scoped>
-.body {
-	display: flex;
-	height: 100%;
-}
+  .body {
+  	display: flex;
+  	height: 100%;
+  }
 
-.image-container {
-	height: 100%;
-	width: 50%;
-}
+  .image-container {
+  	height: 100%;
+  	width: 50%;
+  }
 
-.register-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100%;
-	width: 50%;
-	align-items: center;
-	padding: 10px 20px;
-	text-align: center;
-}
+  .register-container {
+  	display: flex;
+  	flex-direction: column;
+  	justify-content: center;
+  	height: 100%;
+  	width: 50%;
+  	align-items: center;
+  	padding: 10px 20px;
+  	text-align: center;
+  }
 
-.top {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-	align-items: end;
-	padding: 10px 20px;
-	text-align: center;
-}
+  .top {
+  	display: flex;
+  	justify-content: space-between;
+  	width: 100%;
+  	align-items: end;
+  	padding: 10px 20px;
+  	text-align: center;
+  }
 
-.center {
-	padding: 10px 20px; /* horizontal / vertical */
-	text-align: center;
-	width: 100%;
-}
+  .center {
+  	padding: 10px 20px; /* horizontal / vertical */
+  	text-align: center;
+  	width: 100%;
+  }
 
-.bottom {
-	padding: 10px 20px; /* horizontal / vertical */
-	width: 100%;
-}
+  .bottom {
+  	padding: 10px 20px; /* horizontal / vertical */
+  	width: 100%;
+  }
 
-.input-section {
+  .input-section {
 
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 100%;
+  	display: flex;
+  	flex-direction: column;
+  	justify-content: space-between;
+  	width: 100%;
 
-	
-	* {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		text-align: start;
-		width: 100%;
-	}
-}
 
-.is-valid-section {
-	padding: 10px 20px; /* horizontal / vertical */
-}
+  	* {
+  		display: flex;
+  		flex-direction: column;
+  		justify-content: center;
+  		text-align: start;
+  		width: 100%;
+  	}
+  }
 
-.botton-section {
-	padding: 10px 20px; /* horizontal / vertical */
-}
+  .is-valid-section {
+  	padding: 10px 20px; /* horizontal / vertical */
+  }
+
+  .botton-section {
+  	padding: 10px 20px; /* horizontal / vertical */
+  }
 
 </style>
