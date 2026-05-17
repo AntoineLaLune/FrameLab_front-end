@@ -37,13 +37,9 @@
 					email : oldEmail.value,
 					password : oldPassword.value
 				})
-			}); const data = await response.json();
+			});
 
-
-			isValid.value = "";
-
-			console.log("vvvvv"+data.success)
-
+			const data = await response.json();
 
 			if (data.success == false) {
 				isValid.value = data.message;
@@ -65,9 +61,9 @@
 					newPassword : password.value,
 					password : oldPassword.value
 				})
-			}); const data = await response.json();
+			});
 
-			isValid.value = "";
+			const data = await response.json();
 
 			if (data.success == false) {
 				if (data.message == "L'adresse email n'existe pas." ||
@@ -88,7 +84,8 @@
 	}
 
 	async function logout() {
-		console.log("Peut être, peut être pas.") // @TODO
+		await apiCall.logout();
+		document.location.href="/";
 	}
 
 </script>

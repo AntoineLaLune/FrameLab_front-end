@@ -59,6 +59,17 @@ export async function login(email: string, password: string) {
 	return data;
 }
 
+export async function logout() {
+	const response = await fetch("/api/auth/logout", {
+		method: "POST",
+		headers: { 'Content-Type' : "application/json" },
+		body: JSON.stringify({
+		})
+	});
+	const data = await response.json();
+	return data;
+}
+
 export async function postChallenge(title:string, description:string, file:any, startDate:string, endDate:string, id:string) {
 	const formData = new FormData()
 	formData.append("title", title);
