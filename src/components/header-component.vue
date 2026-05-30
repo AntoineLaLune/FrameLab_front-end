@@ -13,6 +13,8 @@
 		userData: Object,
 	});
 
+	const isHidden = ref(false);
+
 	const account: Ref = ref("");
 	const accountId: Ref = ref("");
 	const ifDisconect: Ref = ref("");
@@ -42,11 +44,14 @@
 	);
 	const challengeId: number = Number(urlParams.get("id"));
 
-	// Check if the Challenge page is loaded
+	// Check page loaded
 	onMounted(async () => {
 		await router.isReady();
 		if (route.path == "/challenge") {
 			challengeData.value = await apiCall.getChallenge(challengeId);
+		}
+		if (route.path == "/login" || route.path == "/register") {
+			isHidden.value = true;
 		}
 	});
 
@@ -59,7 +64,7 @@
 </script>
 
 <template>
-	<div class="header">
+	<div class="header" v-bind:class="{ hidden: isHidden }">
 		<div class="hybrid">
 			<h1 class="cursor" v-on:click="redirectHome">
 				FrameLab
@@ -86,6 +91,10 @@
 </template>
 
 <style scoped>
+	.hidden {
+		display: none !important;
+	}
+
 	.header {
 		display: flex;
 		flex-direction: row;

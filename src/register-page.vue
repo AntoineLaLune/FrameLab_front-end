@@ -55,6 +55,9 @@
 
 		document.location.href = "/";
 	}
+	function goBack() {
+		document.location.href = "/";
+	}
 </script>
 
 <template>
@@ -91,6 +94,7 @@
 				</div>
 				<div class="bottom">
 					<div class="botton-section">
+						<button id="button" v-on:click="goBack">Retour</button>
 						<button v-on:click="submit" type="submit">Valider</button>
 					</div>
 					<div class="is-valid-section">
@@ -99,8 +103,7 @@
 				</div>
 			</div>
 			<div class="image-container">
-				<img href="/api/renard.webp" alt="Decoration Image" />
-				<!-- À FAIRE -->
+				<img src="./assets/fox.webp" alt="Decoration Image" />
 			</div>
 		</div>
 	</body>
@@ -113,8 +116,10 @@
 	}
 
 	.image-container {
-		height: 100%;
-		width: 50%;
+		img {
+			height: 100%;
+			aspect-ratio: 1;
+		}
 	}
 
 	.register-container {
@@ -122,10 +127,8 @@
 		flex-direction: column;
 		justify-content: center;
 		height: 100%;
-		width: 50%;
+		width: 100%;
 		align-items: center;
-		padding: 10px 20px;
-		text-align: center;
 	}
 
 	.top {
@@ -133,19 +136,18 @@
 		justify-content: space-between;
 		width: 100%;
 		align-items: end;
-		padding: 10px 20px;
-		text-align: center;
+		padding: 10px 20px; /* horizontal / vertical */
 	}
 
 	.center {
-		padding: 10px 20px; /* horizontal / vertical */
-		text-align: center;
 		width: 100%;
+		padding: 10px 20px; /* horizontal / vertical */
 	}
 
 	.bottom {
-		padding: 10px 20px; /* horizontal / vertical */
 		width: 100%;
+		height: 12%;
+		padding: 10px 20px; /* horizontal / vertical */
 	}
 
 	.input-section {
@@ -154,7 +156,7 @@
 		justify-content: space-between;
 		width: 100%;
 
-		* {
+		div {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -168,6 +170,12 @@
 	}
 
 	.botton-section {
-		padding: 10px 20px; /* horizontal / vertical */
+		display: flex;
+		justify-content: space-around;
+		width: 100%;
+
+		* {
+			width: 45%;
+		}
 	}
 </style>

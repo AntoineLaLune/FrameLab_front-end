@@ -4,7 +4,7 @@
 	"tasks": {
 		"dev": "deno run -A vite",
 		"lint": "deno lint",
-		"type-check": "npx ./node_modules/vue-tsc", // npx (motor of node.js) used with running the package localy fix vue-tsc,
+		"type-check": "npx ./node_modules/vue-tsc", // npx (motor of node.js) used with running the package localy fix vue-tsc
 		"build": "deno task lint && deno task type-check && deno run -A vite build",
 		"preview": "deno run -A vite preview",
 		"fmt": "deno fmt && deno run -A prettier --write '**/*.vue'"

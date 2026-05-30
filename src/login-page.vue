@@ -45,6 +45,9 @@
 		}
 		document.location.href = "/";
 	}
+	function goBack() {
+		document.location.href = "/";
+	}
 </script>
 
 <template>
@@ -83,6 +86,7 @@
 				</div>
 				<div class="bottom">
 					<div class="botton-section">
+						<button id="button" v-on:click="goBack">Retour</button>
 						<button id="button" v-on:click="login" type="submit">
 							Valider
 						</button>
@@ -102,7 +106,6 @@
 <style scoped>
 	.body {
 		display: flex;
-		justify-content: space-between;
 		height: 100%;
 	}
 
@@ -119,27 +122,26 @@
 		justify-content: center;
 		width: 100%;
 		align-items: center;
-		text-align: center;
 	}
 
 	.top {
-		padding: 10px 20px;
-		text-align: center;
 		display: flex;
 		justify-content: space-between;
 		width: 100%;
 		align-items: end;
+		padding: 10px 20px; /* horizontal / vertical */
 	}
 
 	.center {
-		padding: 10px 20px; /* horizontal / vertical */
-		text-align: center;
 		width: 100%;
+		height: 12%;
+		padding: 10px 20px; /* horizontal / vertical */
 	}
 
 	.bottom {
-		padding: 10px 20px; /* horizontal / vertical */
 		width: 100%;
+		height: 12%;
+		padding: 10px 20px; /* horizontal / vertical */
 	}
 
 	.input-section {
@@ -168,7 +170,13 @@
 		padding: 10px 20px; /* horizontal / vertical */
 	}
 
-	.button-section {
-		padding: 10px 20px; /* horizontal / vertical */
+	.botton-section {
+		display: flex;
+		justify-content: space-around;
+		width: 100%;
+
+		* {
+			width: 45%;
+		}
 	}
 </style>
