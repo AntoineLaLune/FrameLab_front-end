@@ -1,21 +1,22 @@
 <script setup lang="ts">
-	import Header from "./components/header-component.vue";
-
-	import * as apiCall from "./utils/apiCall.ts";
-
+	// Import(s)
 	import { onMounted, type Ref, ref } from "vue";
 	import { RouterView } from "vue-router";
+	import Header from "./components/header-component.vue";
+	import * as apiCall from "./utils/apiCall.ts";
 
+	// Set variable(s)
 	const userData: Ref = ref(null);
 
+	// Load user if session
 	onMounted(async () => {
 		userData.value = await apiCall.getSession();
 	});
 </script>
 
 <template>
-	<Header :userData="userData" />
-	<RouterView :userData="userData" />
+	<Header v-bind:userData="userData" />
+	<RouterView v-bind:userData="userData" />
 </template>
 
 <style>

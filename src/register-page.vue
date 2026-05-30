@@ -1,27 +1,37 @@
 <script setup lang="ts">
+	// Import(s)
+	import { type Ref, ref } from "vue";
 	import * as apiCall from "./utils/apiCall";
 
-	import { type Ref, ref } from "vue";
-
-	const link = location.href;
-	const linkEmail = link.substring(link.indexOf("?") + 7);
-
-	const isValid: Ref = ref("");
-	const lastName: Ref = ref("");
-	const firstName: Ref = ref("");
-	const email: Ref = ref("");
-	const password: Ref = ref("");
-
-	if (link.indexOf("?") !== -1) {
-		email.value = linkEmail;
-	}
-
+	// Set interface(s)
 	interface RegisterResponse {
 		success?: boolean;
 		message?: string;
 	}
 
-	async function submit() {
+	// Set variable(s)
+	const lastName: Ref = ref("");
+	const firstName: Ref = ref("");
+	const email: Ref = ref("");
+	const password: Ref = ref("");
+	const info: Ref = ref("");
+
+	// Load email from params
+	const url: URL = new URL(location.href);
+	const linkEmail = url.searchParams.get("email");
+	if (linkEmail) {
+		email.value = linkEmail;
+	}
+
+	// Launch register when enter
+	document.addEventListener("keypress", logKey);
+	function logKey(e: KeyboardEvent) {
+		if (e.key == "Enter") {
+			register();
+		}
+	}
+
+	async function register() {
 		const data: RegisterResponse = await apiCall.register(
 			lastName.value,
 			firstName.value,
@@ -29,11 +39,11 @@
 			password.value,
 		);
 
-		isValid.value = "";
+		info.value = "";
 
 		if (data.success == false) {
 			if (data.message == "Le format de l'adresse email est invalide.") {
-				isValid.value = data.message;
+				info.value = data.message;
 				return;
 			}
 		}
@@ -43,20 +53,24 @@
 				data.message ==
 				"Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)"
 			) {
-				isValid.value = data.message;
+				info.value = data.message;
 				return;
 			}
 		}
 
 		if (data.success == false) {
-			isValid.value = "Oups, quelque chose c'est mal passé !";
+			info.value = "Oups, quelque chose c'est mal passé !";
 			return;
 		}
 
 		document.location.href = "/";
 	}
 	function goBack() {
-		document.location.href = "/";
+		if (linkEmail) {
+			document.location.href = "/login?email=" + linkEmail;
+		} else {
+			document.location.href = "/login";
+		}
 	}
 </script>
 
@@ -95,10 +109,10 @@
 				<div class="bottom">
 					<div class="botton-section">
 						<button id="button" v-on:click="goBack">Retour</button>
-						<button v-on:click="submit" type="submit">Valider</button>
+						<button v-on:click="register" type="submit">Valider</button>
 					</div>
-					<div class="is-valid-section">
-						<p class="low-warning">{{ isValid }}</p>
+					<div class="info-section">
+						<p class="low-warning">{{ info }}</p>
 					</div>
 				</div>
 			</div>
@@ -165,7 +179,7 @@
 		}
 	}
 
-	.is-valid-section {
+	.info-section {
 		padding: 10px 20px; /* horizontal / vertical */
 	}
 

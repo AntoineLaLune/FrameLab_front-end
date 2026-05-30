@@ -1,8 +1,9 @@
 <script setup lang="ts">
+	// Import(s)
+	import { type Ref, ref } from "vue";
 	import * as apiCall from "./utils/apiCall";
 
-	import { type Ref, ref } from "vue";
-
+	// Set interface(s)
 	interface LoginResponse {
 		success?: boolean;
 		data?: {
@@ -16,12 +17,20 @@
 		message?: string;
 	}
 
-	const isValid: Ref = ref("");
+	// Set variable(s)
 	const email: Ref = ref("");
 	const password: Ref = ref("");
+	const info: Ref = ref("");
 
+	// Load email from params
+	const url: URL = new URL(location.href);
+	const linkEmail = url.searchParams.get("email");
+	if (linkEmail) {
+		email.value = linkEmail;
+	}
+
+	// Launch login when enter
 	document.addEventListener("keypress", logKey);
-
 	function logKey(e: KeyboardEvent) {
 		if (e.key == "Enter") {
 			login();
@@ -39,7 +48,7 @@
 				document.location.href = "/register?email=" + email.value;
 				return;
 			} else {
-				isValid.value = data.message;
+				info.value = data.message;
 				return;
 			}
 		}
@@ -91,8 +100,8 @@
 							Valider
 						</button>
 					</div>
-					<div class="is-valid-section">
-						<p class="low-warning">{{ isValid }}</p>
+					<div class="info-section">
+						<p class="low-warning">{{ info }}</p>
 					</div>
 				</div>
 			</div>
@@ -166,7 +175,7 @@
 		}
 	}
 
-	.is-valid-section {
+	.info-section {
 		padding: 10px 20px; /* horizontal / vertical */
 	}
 

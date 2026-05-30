@@ -1,50 +1,40 @@
 <script setup lang="ts">
-	import * as apiCall from "./../utils/apiCall.ts";
-
-	import { onMounted, type Ref, ref, watch } from "vue";
+	// Import(s)
+	import { onMounted, type Ref, ref, computed } from "vue";
 	import {
 		type _RouterClassic,
 		type RouteLocationNormalizedLoadedGeneric,
 		useRoute,
 		useRouter,
 	} from "vue-router";
+	import * as apiCall from "./../utils/apiCall.ts";
 
+	// Set variable(s)
 	const { userData } = defineProps({
 		userData: Object,
 	});
-
+	const account = computed(() => {
+		if (!userData || !userData.value) return "";
+		return userData.value.first_name;
+	});
+	const accountId = computed(() => {
+		if (!userData || !userData.value) return "";
+		return userData.value.id;
+	});
+	const isDisconect = computed(() => {
+		if (!userData || !userData.value) return true;
+		return false;
+	});
 	const isHidden = ref(false);
 
-	const account: Ref = ref("");
-	const accountId: Ref = ref("");
-	const ifDisconect: Ref = ref("");
+	// Load challengeId from params
+	const url: URL = new URL(location.href);
+	const challengeId: number = Number(url.searchParams.get("id"));
 
-	// Check if the user is connected
-	watch(
-		() => userData,
-		(newUserData) => {
-			if (newUserData == undefined || newUserData == null) {
-				account.value = "";
-				accountId.value = "";
-				ifDisconect.value = "Connectez votre ";
-			} else {
-				account.value = newUserData.first_name;
-				accountId.value = newUserData.id;
-				ifDisconect.value = "";
-			}
-		},
-		{ immediate: true },
-	);
-
+	const challengeData: Ref = ref({});
+	// Check page loaded
 	const route: RouteLocationNormalizedLoadedGeneric = useRoute();
 	const router: _RouterClassic = useRouter();
-	const challengeData: Ref = ref({});
-	const urlParams: URLSearchParams = new URLSearchParams(
-		window.location.search,
-	);
-	const challengeId: number = Number(urlParams.get("id"));
-
-	// Check page loaded
 	onMounted(async () => {
 		await router.isReady();
 		if (route.path == "/challenge") {
@@ -56,7 +46,11 @@
 	});
 
 	function redirectAccount() {
-		document.location.href = "/account";
+		if (!isDisconect) {
+			document.location.href = "/account";
+		} else {
+			document.location.href = "/login";
+		}
 	}
 	function redirectHome() {
 		document.location.href = "/";
@@ -82,9 +76,12 @@
 		</div>
 
 		<div class="=profile-zone, cursor" v-on:click="redirectAccount">
-			<h2>
-				<span>{{ ifDisconect }}Utilisateur{{ accountId }}</span
+			<h2 v-if="!isDisconect">
+				<span>Utilisateur{{ accountId }}</span
 				><span class="not-bold">{{ account }}</span>
+			</h2>
+			<h2 v-else>
+				<span class="not-bold">Non connecté</span>
 			</h2>
 		</div>
 	</div>
