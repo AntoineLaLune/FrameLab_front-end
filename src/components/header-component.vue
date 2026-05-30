@@ -120,6 +120,6 @@
 		display: block;
 		height: 96px;
 
-		padding-left: 24px;
+		margin-left: 24px;
 	}
 </style>

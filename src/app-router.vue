@@ -212,5 +212,8 @@
 
 	img {
 		aspect-ratio: auto;
+		outline-style: dashed;
+		outline-color: black;
+		outline-width: 2px;
 	}
 </style>
