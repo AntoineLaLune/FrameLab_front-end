@@ -1,46 +1,65 @@
-<script setup>
-
-	import { ref } from "vue";
-
+<script setup lang="ts">
 	import * as apiCall from "./utils/apiCall.ts";
 
-	function formatDate(dateString) {
-		if (!dateString) return ''
-		const date = new Date(dateString)
-		return date.toLocaleDateString('fr-Fr', {
-			day: 'numeric',
-			month: 'long',
-			year: 'numeric',
-			hour: '2-digit',
-			minute: '2-digit',
-		})
+	import { type Ref, ref, watch } from "vue";
+
+	const { userData } = defineProps({
+		userData: Object,
+	});
+
+	const accountId = ref();
+
+	// Check if the user is connected
+	watch(
+		() => userData,
+		(newUserData) => {
+			if (newUserData == undefined || newUserData == null) {
+				accountId.value = "";
+			} else {
+				accountId.value = newUserData.id;
+			}
+		},
+		{ immediate: true },
+	);
+
+	function formatDate(dateString: Date) {
+		if (!dateString) return "";
+		const date = new Date(dateString);
+		return date.toLocaleDateString("fr-Fr", {
+			day: "numeric",
+			month: "long",
+			year: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+		});
 	}
 
-	const title = ref("");
-	const description = ref("");
-	const file = ref("");
-	const startDate = ref("");
-	const endDate = ref("");
-	let creatorId;
+	const title: Ref = ref("");
+	const description: Ref = ref("");
+	const file: Ref = ref();
+	const startDate: Ref = ref("");
+	const endDate: Ref = ref("");
 
-	async function fileChange(event) {
-		file.value = event.target.files[0]; // Prend "file" du event lisener déclangé
+	async function fileChange(event: Event) {
+		const target = event.target as HTMLInputElement;
+		if (target && target.files && target.files.length > 0) {
+			file.value = target.files[0];
+		}
 	}
 
 	async function submit() {
-		const data = await apiCall.getSession();
-
-		creatorId = data.id;
-
-		apiCall.postChallenge(title.value, description.value, file.value, startDate.value, endDate.value, creatorId);
+		apiCall.postChallenge(
+			title.value,
+			description.value,
+			file.value,
+			startDate.value,
+			endDate.value,
+			accountId.value,
+		);
 	}
-
 </script>
 
-
-
 <template>
-
 	<body>
 		<div class="body">
 			<div class="left-container">
@@ -57,8 +76,12 @@
 					</div>
 					<div>
 						<label>Desciption of the challenge</label>
-						<textarea v-model="description" type="text" name="description"
-						style="min-height: 20lh; max-height: 35lh"></textarea>
+						<textarea
+							v-model="description"
+							type="text"
+							name="description"
+							style="min-height: 20lh; max-height: 35lh"
+						></textarea>
 					</div>
 					<div class="confirm-button">
 						<input @change="fileChange" type="file" />
@@ -68,13 +91,9 @@
 			</div>
 		</div>
 	</body>
-
 </template>
 
-
-
 <style scoped>
-
 	.body {
 		display: flex;
 		height: 100%;
@@ -101,7 +120,6 @@
 	}
 
 	.input-section {
-
 		width: 100%;
 
 		* {
@@ -111,7 +129,6 @@
 			text-align: start;
 			width: 100%;
 		}
-
 	}
 
 	.confirm-button {
@@ -120,5 +137,4 @@
 			margin-block: 5px;
 		}
 	}
-
 </style>

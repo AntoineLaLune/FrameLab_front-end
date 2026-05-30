@@ -1,81 +1,77 @@
-<script setup>
-
-	import { ref } from "vue";
-
+<script setup lang="ts">
 	import * as apiCall from "./utils/apiCall.ts";
 
-	const isValid = ref("");
-	const lastName = ref("");
-	const firstName = ref("");
-	const email = ref("");
-	const oldEmail = ref("");
-	const password = ref("");
-	const oldPassword = ref("");
+	import { type Ref, ref, watch } from "vue";
 
-	window.onload = async function() { // Check si un compte est connecté
-		const data = await apiCall.getSession();
+	const { userData } = defineProps({
+		userData: Object,
+	});
 
-		if (data == undefined) {
-			document.location.href="/login";
-		}
+	// Check if the user is connected
+	watch(
+		() => userData,
+		(newUserData) => {
+			if (newUserData == undefined || newUserData == null) {
+				document.location.href = "/login";
+			} else {
+				lastName.value = newUserData.last_name;
+				firstName.value = newUserData.first_name;
+				email.value = newUserData.email;
+				oldEmail.value = newUserData.email;
+			}
+		},
+		{ immediate: true },
+	);
 
-		lastName.value = data.last_name;
-		firstName.value = data.first_name;
-		email.value = data.email;
-		oldEmail.value = data.email;
-	}
+	const isValid: Ref = ref("");
+	const lastName: Ref = ref("");
+	const firstName: Ref = ref("");
+	const email: Ref = ref("");
+	const oldEmail: Ref = ref("");
+	const newPassword: Ref = ref("");
+	const currentPassword: Ref = ref("");
 
 	async function submit() {
-		if (password.value == null || password.value == "") {
-			const response = await fetch("/api/users/edit", {
-				method: "PUT",
-				headers: { 'Content-Type' : "application/json" },
-				body: JSON.stringify({
-					newLastName : lastName.value,
-					newFirstName : firstName.value,
-					newEmail : email.value,
-					email : oldEmail.value,
-					password : oldPassword.value
-				})
-			});
-
-			const data = await response.json();
+		if (newPassword.value == null || newPassword.value == "") {
+			const data = await apiCall.editUser(
+				lastName.value,
+				firstName.value,
+				email.value,
+				oldEmail.value,
+				currentPassword.value,
+			);
 
 			if (data.success == false) {
 				isValid.value = data.message;
 				return;
 			} else {
-				isValid.value = "Changement effectué avec succès."
+				isValid.value = "Changement effectué avec succès.";
 				return;
 			}
 		}
-		if (password.value !== null && password.value !== "") {
-			const response = await fetch("/api/users/edit_with_password", {
-				method: "PUT",
-				headers: { 'Content-Type' : "application/json" },
-				body: JSON.stringify({
-					newLastName : lastName.value,
-					newFirstName : firstName.value,
-					newEmail : email.value,
-					email : oldEmail.value,
-					newPassword : password.value,
-					password : oldPassword.value
-				})
-			});
-
-			const data = await response.json();
+		if (newPassword.value !== null && newPassword.value !== "") {
+			const data = await apiCall.editUserWithPassword(
+				lastName.value,
+				firstName.value,
+				email.value,
+				oldEmail.value,
+				newPassword.value,
+				currentPassword.value,
+			);
 
 			if (data.success == false) {
-				if (data.message == "L'adresse email n'existe pas." ||
-				data.message == "L'adresse email est déjà utilisé." ||
-				data.message == "Le mot de passe est invalide.") {
+				if (
+					data.message == "L'adresse email n'existe pas." ||
+					data.message == "L'adresse email est déjà utilisé." ||
+					data.message == "Le mot de passe est invalide."
+				) {
 					isValid.value = data.message;
 					return;
 				}
 				isValid.value = "Oups, quelque chose c'est mal passé !";
 				return;
 			} else {
-				isValid.value = "Changement effectué avec succès."
+				isValid.value = "Changement effectué avec succès.";
 				return;
 			}
 		}
@@ -85,15 +81,11 @@
 
 	async function logout() {
 		await apiCall.logout();
-		document.location.href="/";
+		document.location.href = "/";
 	}
-
 </script>
 
-
-
 <template>
-
 	<body>
 		<div class="account-container">
 			<div class="top">
@@ -120,11 +112,15 @@
 					</div>
 					<div class="old-password-input-section">
 						<label>Mot de passe actuel *</label>
-						<input v-model="oldPassword" type="password" name="oldPassword" />
+						<input
+							v-model="currentPassword"
+							type="password"
+							name="currentPassword"
+						/>
 					</div>
 					<div class="password-input-section">
 						<label>Nouveau Mot de passe</label>
-						<input v-model="password" type="password" name="password" />
+						<input v-model="newPassword" type="password" name="newPassword" />
 					</div>
 				</div>
 			</div>
@@ -141,13 +137,9 @@
 			</div>
 		</div>
 	</body>
-
 </template>
 
-
-
 <style scoped>
-
 	.account-container {
 		display: flex;
 		flex-direction: column;
@@ -180,12 +172,10 @@
 	}
 
 	.input-section {
-
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		width: 100%;
-
 
 		* {
 			display: flex;
@@ -203,5 +193,4 @@
 	.botton-section {
 		padding: 10px 20px; /* horizontal / vertical */
 	}
-
 </style>

@@ -22,23 +22,30 @@ export async function getArchivesChallenges() {
 }
 
 export async function getParticipationsByChallengeId(challenge_id: number) {
-const response = await fetch("/api/participations?limit=50&challenge_id=" + challenge_id);
-const data = await response.json();
-return data.participations;
+	const response = await fetch(
+		"/api/participations?limit=50&challenge_id=" + challenge_id,
+	);
+	const data = await response.json();
+	return data.participations;
 }
 
-export async function getUserParticipation(user_id: number, challenge_id: number) {
-  const response = await fetch("/api/participations?user_id=" + user_id + "&challenge_id=" + challenge_id);
-  const data = await response.json();
+export async function getUserParticipation(
+	user_id: number,
+	challenge_id: number,
+) {
+	const response = await fetch(
+		"/api/participations?user_id=" + user_id + "&challenge_id=" + challenge_id,
+	);
+	const data = await response.json();
 	return data.participations[0];
 }
 
 export async function getSession() {
 	const response = await fetch("/api/auth/session", {
 		method: "GET",
-		headers: { 'Content-Type' : "application/json" },
+		headers: { "Content-Type": "application/json" },
 	});
-  const data = await response.json();
+	const data = await response.json();
 	if (data.success == true) {
 		return data.user;
 	} else {
@@ -49,11 +56,77 @@ export async function getSession() {
 export async function login(email: string, password: string) {
 	const response = await fetch("/api/auth/login", {
 		method: "POST",
-		headers: { 'Content-Type' : "application/json" },
+		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
-			email : email,
-			password : password
-		})
+			email: email,
+			password: password,
+		}),
+	});
+	const data = await response.json();
+	return data;
+}
+
+export async function register(
+	lastName: string,
+	firstName: string,
+	email: string,
+	password: string,
+) {
+	const response = await fetch("/api/auth/register", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			lastName: lastName,
+			firstName: firstName,
+			email: email,
+			password: password,
+		}),
+	});
+	const data = await response.json();
+	return data;
+}
+
+export async function editUser(
+	lastName: string,
+	firstName: string,
+	email: string,
+	oldEmail: string,
+	currentPassword: string,
+) {
+	const response = await fetch("/api/users/edit", {
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			newLastName: lastName,
+			newFirstName: firstName,
+			newEmail: email,
+			email: oldEmail,
+			password: currentPassword,
+		}),
+	});
+	const data = await response.json();
+	return data;
+}
+
+export async function editUserWithPassword(
+	lastName: string,
+	firstName: string,
+	email: string,
+	oldEmail: string,
+	newPassword: string,
+	currentPassword: string,
+) {
+	const response = await fetch("/api/users/edit", {
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			newLastName: lastName,
+			newFirstName: firstName,
+			newEmail: email,
+			email: oldEmail,
+			newPassword: newPassword,
+			password: currentPassword,
+		}),
 	});
 	const data = await response.json();
 	return data;
@@ -62,26 +135,32 @@ export async function login(email: string, password: string) {
 export async function logout() {
 	const response = await fetch("/api/auth/logout", {
 		method: "POST",
-		headers: { 'Content-Type' : "application/json" },
-		body: JSON.stringify({
-		})
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({}),
 	});
 	const data = await response.json();
 	return data;
 }
 
-export async function postChallenge(title:string, description:string, file:any, startDate:string, endDate:string, id:string) {
-	const formData = new FormData()
+export async function postChallenge(
+	title: string,
+	description: string,
+	file: File,
+	startDate: string,
+	endDate: string,
+	id: string,
+) {
+	const formData = new FormData();
 	formData.append("title", title);
 	formData.append("description", description);
 	formData.append("photoUrl", file);
 	formData.append("startDate", startDate);
 	formData.append("endDate", endDate);
 	formData.append("creatorId", id);
-	const response = await fetch("/api/challenges", {
+	await fetch("/api/challenges", {
 		method: "POST",
 		credentials: "include",
 		// headers: { 'Content-Type' : "multipart/form-data" },
-		body: formData
+		body: formData,
 	});
 }

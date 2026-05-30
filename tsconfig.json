@@ -1,0 +1,53 @@
+{
+	"compilerOptions": {
+		/* Environnement cible */
+		"target": "ES2023",
+		"module": "ESNext",
+		"lib": ["ES2023", "DOM", "DOM.Iterable"],
+		"jsx": "preserve",
+		"jsxImportSource": "vue",
+
+		/* Résolution des modules (Mode Bundler) */
+		"moduleResolution": "Bundler",
+		"moduleDetection": "force",
+		"allowImportingTsExtensions": true,
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+
+		/* Configuration des plugins (Vue) */
+		"plugins": [
+			{
+				"name": "@vue/typescript-plugin",
+				"languages": ["vue"]
+			}
+		],
+
+		/* Règles strictes et Qualité de code (Linting) */
+		"strict": true,
+		"noUncheckedIndexedAccess": true,
+		"exactOptionalPropertyTypes": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"erasableSyntaxOnly": true,
+
+		/* Spécificités Vite / Vue */
+		"isolatedModules": true,
+		"verbatimModuleSyntax": true,
+		"noUncheckedSideEffectImports": true,
+
+		/* Sortie et Performance */
+		"composite": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo"
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"vite.config.ts",
+		"deno.d.ts"
+	]
+}

@@ -1,31 +1,33 @@
-<script setup>
+<script setup lang="ts">
+	import * as apiCall from "./utils/apiCall";
 
-	import { ref } from "vue";
+	import { type Ref, ref } from "vue";
 
 	const link = location.href;
-	const linkEmail = link.substring(link.indexOf("?")+7);
+	const linkEmail = link.substring(link.indexOf("?") + 7);
 
-	const isValid = ref("");
-	const lastName = ref("");
-	const firstName = ref("");
-	const email = ref("");
-	const password = ref("");
+	const isValid: Ref = ref("");
+	const lastName: Ref = ref("");
+	const firstName: Ref = ref("");
+	const email: Ref = ref("");
+	const password: Ref = ref("");
 
 	if (link.indexOf("?") !== -1) {
 		email.value = linkEmail;
 	}
 
+	interface RegisterResponse {
+		success?: boolean;
+		message?: string;
+	}
+
 	async function submit() {
-		const response = await fetch("/api/auth/register", {
-			method: "POST",
-			headers: { 'Content-Type' : "application/json" },
-			body: JSON.stringify({
-				lastName : lastName.value,
-				firstName : firstName.value,
-				email : email.value,
-				password : password.value
-			})
-		}); const data = await response.json();
+		const data: RegisterResponse = await apiCall.register(
+			lastName.value,
+			firstName.value,
+			email.value,
+			password.value,
+		);
 
 		isValid.value = "";
 
@@ -37,7 +39,10 @@
 		}
 
 		if (data.success == false) {
-			if (data.message == "Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)") {
+			if (
+				data.message ==
+				"Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)"
+			) {
 				isValid.value = data.message;
 				return;
 			}
@@ -48,15 +53,11 @@
 			return;
 		}
 
-		document.location.href="/";
+		document.location.href = "/";
 	}
-
 </script>
 
-
-
 <template>
-
 	<body>
 		<div class="body">
 			<div class="register-container">
@@ -98,17 +99,14 @@
 				</div>
 			</div>
 			<div class="image-container">
-				<img href="/api/renard.webp" alt="Decoration Image" /> <!-- À FAIRE -->
+				<img href="/api/renard.webp" alt="Decoration Image" />
+				<!-- À FAIRE -->
 			</div>
 		</div>
 	</body>
-
 </template>
 
-
-
 <style scoped>
-
 	.body {
 		display: flex;
 		height: 100%;
@@ -151,12 +149,10 @@
 	}
 
 	.input-section {
-
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 		width: 100%;
-
 
 		* {
 			display: flex;
@@ -174,5 +170,4 @@
 	.botton-section {
 		padding: 10px 20px; /* horizontal / vertical */
 	}
-
 </style>

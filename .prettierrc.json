@@ -1,0 +1,12 @@
+{
+	"useTabs": true,
+	"overrides": [
+		{
+			"files": "*.vue",
+			"options": {
+				"parser": "vue",
+				"vueIndentScriptAndStyle": true
+			}
+		}
+	]
+}

@@ -1,14 +1,21 @@
-<script setup>
+<script setup lang="ts">
+	import * as apiCall from "./../utils/apiCall.ts";
 
-	import { ref, watch } from "vue";
+	import { onMounted, type Ref, ref, watch } from "vue";
+	import {
+		type _RouterClassic,
+		type RouteLocationNormalizedLoadedGeneric,
+		useRoute,
+		useRouter,
+	} from "vue-router";
 
 	const { userData } = defineProps({
 		userData: Object,
 	});
 
-	const account = ref("");
-	const accountId = ref("");
-	const ifDisconect = ref("");
+	const account: Ref = ref("");
+	const accountId: Ref = ref("");
+	const ifDisconect: Ref = ref("");
 
 	// Check if the user is connected
 	watch(
@@ -27,15 +34,13 @@
 		{ immediate: true },
 	);
 
-	import * as apiCall from "./../utils/apiCall.ts";
-	import { onMounted } from "vue";
-	import { useRoute, useRouter } from "vue-router";
-
-	const route = useRoute();
-	const router = useRouter();
-	const challengeData = ref({});
-	const urlParams = new URLSearchParams(window.location.search);
-	const challengeId = urlParams.get("id");
+	const route: RouteLocationNormalizedLoadedGeneric = useRoute();
+	const router: _RouterClassic = useRouter();
+	const challengeData: Ref = ref({});
+	const urlParams: URLSearchParams = new URLSearchParams(
+		window.location.search,
+	);
+	const challengeId: number = Number(urlParams.get("id"));
 
 	// Check if the Challenge page is loaded
 	onMounted(async () => {
@@ -51,22 +56,16 @@
 	function redirectHome() {
 		document.location.href = "/";
 	}
-
 </script>
 
-
-
 <template>
-
 	<div class="header">
 		<div class="hybrid">
 			<h1 class="cursor" v-on:click="redirectHome">
 				FrameLab
 				<div v-if="route.path == '/challenge'">
 					<span>{{ challengeData.title }}</span
-					><span class="not-bold" v-if="challengeData != null"
-						>Challenge</span
-					>
+					><span class="not-bold" v-if="challengeData != null">Challenge</span>
 				</div>
 			</h1>
 			<div v-if="route.path == '/challenge'">
@@ -84,13 +83,9 @@
 			</h2>
 		</div>
 	</div>
-
 </template>
 
-
-
 <style scoped>
-
 	.header {
 		display: flex;
 		flex-direction: row;
@@ -121,5 +116,4 @@
 
 		padding-left: 24px;
 	}
-
 </style>

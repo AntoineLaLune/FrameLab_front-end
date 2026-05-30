@@ -1,60 +1,87 @@
-<script setup>
-	import { ref } from "vue";
+<script setup lang="ts">
+	import { type Ref, ref } from "vue";
 
 	defineProps(["participation"]);
 
-	const isValid = ref("");
-	const creativityNote = ref(1);
-	const technicalNote = ref(1);
-	const respectNote = ref(1);
+	const isValid: Ref = ref("");
+	const creativityNote: Ref = ref(1);
+	const technicalNote: Ref = ref(1);
+	const respectNote: Ref = ref(1);
 
-	const validNoteNumber = [1, 2, 3, 4, 5];
+	const validNoteNumber: Array<number> = [1, 2, 3, 4, 5];
 
-	function checkNoteNumber(note) {
-			for (let i = 0; i < validNoteNumber.length; i++) {
-					console.log(note);
-					console.log(note == validNoteNumber[i]);
-					if (note == validNoteNumber[i]) {
-							isValid.value = "";
-							return;
-					}
+	function checkNoteNumber(note: any) {
+		// @TODO
+		for (let i = 0; i < validNoteNumber.length; i++) {
+			console.log(note);
+			console.log(note == validNoteNumber[i]);
+			if (note == validNoteNumber[i]) {
+				isValid.value = "";
+				return;
 			}
-			isValid.value = "La note doit être comprise entre 1 et 5.";
+		}
+		isValid.value = "La note doit être comprise entre 1 et 5.";
 	}
-
 </script>
 
-
-
 <template>
-
 	<div class="participation-container">
 		<div class="top">
-			<h2><span>{{ participation.first_name }}{{ participation.user_id }}</span><span class="not-bold">Participation</span></h2>
+			<h2>
+				<span>{{ participation.first_name }}{{ participation.user_id }}</span
+				><span class="not-bold">Participation</span>
+			</h2>
 			<p>Date de mise en ligne : {{ participation.created }}</p>
 		</div>
 		<div class="center">
 			<div class="image-section">
-				<img v-bind:src="`/uploads${participation.photo_url}`" alt="User Participation Image" />
+				<img
+					v-bind:src="`/uploads${participation.photo_url}`"
+					alt="User Participation Image"
+				/>
 				<!--p>{{ note }}</p-->
 			</div>
 			<div class="user-vote-section">
 				<div class="vote-section">
 					<div class="single-vote-section">
 						<label>
-							<input class="text-center" v-model="creativityNote" v-on:input="checkNoteNumber(creativityNote)" name="Votez de 1 à 5" type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+							<input
+								class="text-center"
+								v-model="creativityNote"
+								v-on:input="checkNoteNumber(creativityNote)"
+								name="Votez de 1 à 5"
+								type="text"
+								maxlength="1"
+								oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+							/>
 							Créativité
 						</label>
 					</div>
 					<div class="single-vote-section">
 						<label>
-							<input class="text-center" v-model="technicalNote" v-on:input="checkNoteNumber(technicalNote)" name="Votez de 1 à 5" type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+							<input
+								class="text-center"
+								v-model="technicalNote"
+								v-on:input="checkNoteNumber(technicalNote)"
+								name="Votez de 1 à 5"
+								type="text"
+								maxlength="1"
+								oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+							/>
 							Technique
 						</label>
 					</div>
 					<div class="single-vote-section">
 						<label>
-							<input class="text-center" v-model="respectNote" v-on:input="checkNoteNumber(respectNote)" name="Votez de 1 à 5" type="text" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+							<input
+								class="text-center"
+								v-model="respectNote"
+								v-on:input="checkNoteNumber(respectNote)"
+								name="Votez de 1 à 5"
+								type="text"
+								maxlength="1"
+								oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+							/>
 							Respect
 						</label>
 					</div>
@@ -69,24 +96,20 @@
 			<button>Voir les commentaires</button>
 		</div>
 	</div>
-
 </template>
 
-
-
 <style scoped>
-
 	.participation-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 
-	height: calc(100% - 20px);
+		height: calc(100% - 20px);
 
-	padding: 10px 20px;
-	border-width: 2px;
+		padding: 10px 20px;
+		border-width: 2px;
 
-	margin: 10px;
+		margin: 10px;
 	}
 
 	.top {
@@ -117,9 +140,8 @@
 	}
 
 	img {
-	display: block;
-	max-width: 512px;
-	max-height: 512px;
+		display: block;
+		max-width: 512px;
+		max-height: 512px;
 	}
-
 </style>

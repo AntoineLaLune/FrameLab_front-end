@@ -1,40 +1,40 @@
-<script setup>
-
+<script setup lang="ts">
 	import ChallengeComponent from "./components/challenge-component.vue";
 
 	import * as apiCall from "./utils/apiCall.ts";
 
-	import { onMounted, ref } from "vue";
+	import { onMounted, type Ref, ref } from "vue";
 
-	const currentChallengeData = ref([]);
-	const archiveChallengesData = ref([]);
-	const currentStatus = ref("Chargement...");
-	const archiveStatus = ref("Chargement...");
-
+	const currentChallengeData: Ref = ref([]);
+	const archiveChallengesData: Ref = ref([]);
+	const currentStatus: Ref = ref("Chargement...");
+	const archiveStatus: Ref = ref("Chargement...");
 
 	onMounted(async () => {
 		currentChallengeData.value = await apiCall.getCurrentChallenge();
 		archiveChallengesData.value = await apiCall.getArchivesChallenges();
 
-		if (currentChallengeData.value == null || currentChallengeData.value.length == 0) {
+		if (
+			currentChallengeData.value == null ||
+			currentChallengeData.value.length == 0
+		) {
 			currentStatus.value = "Aucun challenge actuel disponible.";
 		} else {
 			currentStatus.value = "";
 		}
 
-		if (archiveChallengesData.value == null || archiveChallengesData.value.length == 0) {
+		if (
+			archiveChallengesData.value == null ||
+			archiveChallengesData.value.length == 0
+		) {
 			archiveStatus.value = "Aucun ancian challenge disponible.";
 		} else {
 			archiveStatus.value = "";
 		}
 	});
-
 </script>
 
-
-
 <template>
-
 	<body>
 		<!-- Challenge Actuel -->
 		<h2 class="not-bold">Le challenge actuel</h2>
@@ -49,11 +49,11 @@
 
 		<!-- Anciens Challenges -->
 		<h2 class="not-bold">Les anciens challenges</h2>
-		<div class="horizontal-scroll-container" v-if="archiveChallengesData != null">
-			<div
-				v-for="challenge in archiveChallengesData"
-				v-bind:key="challenge.id"
-			>
+		<div
+			class="horizontal-scroll-container"
+			v-if="archiveChallengesData != null"
+		>
+			<div v-for="challenge in archiveChallengesData" v-bind:key="challenge.id">
 				<ChallengeComponent v-bind:challenge="challenge" />
 			</div>
 		</div>
@@ -61,13 +61,9 @@
 			<p>{{ archiveStatus }}</p>
 		</div>
 	</body>
-
 </template>
 
-
-
 <style scoped>
-
 	h2 {
 		padding: 10px 20px;
 		text-align: center;
@@ -88,5 +84,4 @@
 
 		overflow-y: scroll;
 	}
-
 </style>

@@ -1,17 +1,12 @@
-<script setup>
-
+<script setup lang="ts">
 	defineProps(["challenge"]);
 
-	function redirectChallenge(id) {
-	 	document.location.href=("/challenge?id="+id);
+	function redirectChallenge(id: number) {
+		document.location.href = "/challenge?id=" + id;
 	}
-
 </script>
 
-
-
 <template>
-
 	<div v-if="challenge" class="challenge-container">
 		<div class="top">
 			<h2>
@@ -24,20 +19,19 @@
 			<p class="challenge-description">
 				{{ challenge.description }}
 			</p>
-			<img v-bind:src="`/uploads${challenge.photo_url}`" alt="Challenge Theme Image" />
+			<img
+				v-bind:src="`/uploads${challenge.photo_url}`"
+				alt="Challenge Theme Image"
+			/>
 		</div>
 		<button v-on:click="redirectChallenge(challenge.id)">Voir</button>
 	</div>
 	<div v-else class="challenge-container">
 		<p>Chargement...</p>
 	</div>
-
 </template>
 
-
-
 <style scoped>
-
 	.challenge-container {
 		display: flex;
 		flex-direction: column;
@@ -76,5 +70,4 @@
 		max-width: 512px;
 		max-height: 512px;
 	}
-
 </style>

@@ -1,30 +1,25 @@
-<script setup>
-
+<script setup lang="ts">
 	import Header from "./components/header-component.vue";
-	import { ref, onMounted } from "vue";
-	import { RouterView } from "vue-router";
+
 	import * as apiCall from "./utils/apiCall.ts";
 
-	const userData = ref(null);
+	import { onMounted, type Ref, ref } from "vue";
+	import { RouterView } from "vue-router";
+
+	const userData: Ref = ref(null);
 
 	onMounted(async () => {
 		userData.value = await apiCall.getSession();
 	});
-
 </script>
 
-
-
 <template>
-
 	<Header :userData="userData" />
 	<RouterView :userData="userData" />
-
 </template>
 
-
-
-<style> /* Global CSS Reset from https://www.joshwcomeau.com/css/custom-css-reset/ */
+<style>
+	/* Global CSS Reset from https://www.joshwcomeau.com/css/custom-css-reset/ */
 
 	/* 1. Use a more-intuitive box-sizing model */
 	*,
@@ -95,16 +90,16 @@
 	}
 
 	/*
-	  	10. Create a root stacking context
-	  */
+ 	10. Create a root stacking context
+ */
 	#root,
 	#__next {
 		isolation: isolate;
 	}
-
 </style>
 
-<style> /* Global CSS by me (AntoineLaLune) */
+<style>
+	/* Global CSS by me (AntoineLaLune) */
 
 	:root {
 		--dark-gray: #2c2c2c;
@@ -115,6 +110,17 @@
 	html {
 		/* Not to harsh white background */
 		background-color: var(--light-gray);
+	}
+
+	body,
+	html {
+		margin: 0;
+		height: 100%;
+	}
+
+	.app {
+		margin: 0;
+		height: 100%;
 	}
 
 	* {
@@ -206,5 +212,4 @@
 	img {
 		aspect-ratio: auto;
 	}
-
 </style>
