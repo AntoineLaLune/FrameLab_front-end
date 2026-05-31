@@ -118,19 +118,22 @@
 		height: 100%;
 	}
 
-	.image-container {
-		img {
-			height: 100%;
-			aspect-ratio: 1;
-		}
-	}
-
 	.login-container {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		width: 100%;
+		flex-grow: 1;
+		flex-shrink: 1;
 		align-items: center;
+	}
+
+	.image-container {
+		height: 100%;
+		flex-shrink: 0;
+		img {
+			height: 100%;
+			outline-width: 0px;
+		}
 	}
 
 	.top {
