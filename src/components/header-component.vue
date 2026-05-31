@@ -14,15 +14,15 @@
 		userData: Object,
 	});
 	const account = computed(() => {
-		if (!userData || !userData.value) return "";
-		return userData.value.first_name;
+		if (!userData) return "";
+		return userData.first_name;
 	});
 	const accountId = computed(() => {
-		if (!userData || !userData.value) return "";
-		return userData.value.id;
+		if (!userData) return "";
+		return userData.id;
 	});
 	const isDisconect = computed(() => {
-		if (!userData || !userData.value) return true;
+		if (!userData) return true;
 		return false;
 	});
 	const isHidden = ref(false);
