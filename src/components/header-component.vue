@@ -42,7 +42,7 @@
 
 	// Function(s)
 	function redirectAccount() {
-		if (!isDisconect) {
+		if (!isDisconect.value) {
 			document.location.href = "/account";
 		} else {
 			document.location.href = "/login";

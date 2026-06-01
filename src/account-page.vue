@@ -1,19 +1,13 @@
 <script setup lang="ts">
-	import * as apiCall from "./utils/apiCall.ts";
-
+	// Import(s)
 	import { type Ref, ref, watch } from "vue";
-
-	const { userData } = defineProps({
-		userData: Object,
-	});
+	import * as apiCall from "./utils/apiCall.ts";
 
 	// Check if the user is connected
 	watch(
 		() => userData,
 		(newUserData) => {
-			if (newUserData == undefined || newUserData == null) {
-				document.location.href = "/login";
-			} else {
+			if (newUserData !== undefined && newUserData !== null) {
 				lastName.value = newUserData.last_name;
 				firstName.value = newUserData.first_name;
 				email.value = newUserData.email;
@@ -23,6 +17,10 @@
 		{ immediate: true },
 	);
 
+	// Set variable(s)
+	const { userData } = defineProps({
+		userData: Object,
+	});
 	const isValid: Ref = ref("");
 	const lastName: Ref = ref("");
 	const firstName: Ref = ref("");
@@ -31,6 +29,7 @@
 	const newPassword: Ref = ref("");
 	const currentPassword: Ref = ref("");
 
+	// Function(s)
 	async function submit() {
 		if (newPassword.value == null || newPassword.value == "") {
 			const data = await apiCall.editUser(lastName.value, firstName.value, email.value, oldEmail.value, currentPassword.value);
@@ -62,6 +61,10 @@
 		isValid.value = "Oups, quelque chose c'est mal passé...";
 	}
 
+	async function login() {
+		document.location.href = "/login";
+	}
+
 	async function logout() {
 		await apiCall.logout();
 		document.location.href = "/";
@@ -70,7 +73,7 @@
 
 <template>
 	<body>
-		<div class="account-container">
+		<div v-if="userData" class="account-container">
 			<div class="top">
 				<div>
 					<h1><span>FrameLab</span><span class="not-bold">Compte</span></h1>
@@ -114,6 +117,10 @@
 					<p class="low-warning">{{ isValid }}</p>
 				</div>
 			</div>
+		</div>
+		<div v-else class="account-container">
+			<span>Êtes vous connectez ?</span>
+			<button v-on:click="login">Me connectez</button>
 		</div>
 	</body>
 </template>
