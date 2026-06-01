@@ -14,19 +14,13 @@
 		currentChallengeData.value = await apiCall.getCurrentChallenge();
 		archiveChallengesData.value = await apiCall.getArchivesChallenges();
 
-		if (
-			currentChallengeData.value == null ||
-			currentChallengeData.value.length == 0
-		) {
+		if (currentChallengeData.value == null || currentChallengeData.value.length == 0) {
 			currentStatus.value = "Aucun challenge actuel disponible.";
 		} else {
 			currentStatus.value = "";
 		}
 
-		if (
-			archiveChallengesData.value == null ||
-			archiveChallengesData.value.length == 0
-		) {
+		if (archiveChallengesData.value == null || archiveChallengesData.value.length == 0) {
 			archiveStatus.value = "Aucun ancian challenge disponible.";
 		} else {
 			archiveStatus.value = "";
@@ -49,10 +43,7 @@
 
 		<!-- Anciens Challenges -->
 		<h2 class="not-bold">Les anciens challenges</h2>
-		<div
-			class="horizontal-scroll-container"
-			v-if="archiveChallengesData != null"
-		>
+		<div class="horizontal-scroll-container" v-if="archiveChallengesData != null">
 			<div v-for="challenge in archiveChallengesData" v-bind:key="challenge.id">
 				<ChallengeComponent v-bind:challenge="challenge" />
 			</div>

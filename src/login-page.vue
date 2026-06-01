@@ -37,11 +37,9 @@
 		}
 	}
 
+	// Function(s)
 	async function login() {
-		const data: LoginResponse = await apiCall.login(
-			email.value,
-			password.value,
-		);
+		const data: LoginResponse = await apiCall.login(email.value, password.value);
 
 		if (data.success == false) {
 			if (data.message == "L'adresse email n'existe pas.") {
@@ -54,6 +52,7 @@
 		}
 		document.location.href = "/";
 	}
+
 	function goBack() {
 		document.location.href = "/";
 	}
@@ -75,30 +74,18 @@
 					<div class="input-section">
 						<div class="email-input-section">
 							<label>Email</label>
-							<input
-								id="email_input"
-								v-model="email"
-								type="text"
-								name="email"
-							/>
+							<input id="email_input" v-model="email" type="text" name="email" />
 						</div>
 						<div class="password-input-section">
 							<label>Mot de passe</label>
-							<input
-								id="password_input"
-								v-model="password"
-								type="password"
-								name="password"
-							/>
+							<input id="password_input" v-model="password" type="password" name="password" />
 						</div>
 					</div>
 				</div>
 				<div class="bottom">
 					<div class="botton-section">
 						<button id="button" v-on:click="goBack">Retour</button>
-						<button id="button" v-on:click="login" type="submit">
-							Valider
-						</button>
+						<button id="button" v-on:click="login" type="submit">Valider</button>
 					</div>
 					<div class="info-section">
 						<p class="low-warning">{{ info }}</p>

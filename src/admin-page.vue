@@ -48,14 +48,7 @@
 	}
 
 	async function submit() {
-		apiCall.postChallenge(
-			title.value,
-			description.value,
-			file.value,
-			startDate.value,
-			endDate.value,
-			accountId.value,
-		);
+		apiCall.postChallenge(title.value, description.value, file.value, startDate.value, endDate.value, accountId.value);
 	}
 </script>
 
@@ -76,12 +69,7 @@
 					</div>
 					<div>
 						<label>Desciption of the challenge</label>
-						<textarea
-							v-model="description"
-							type="text"
-							name="description"
-							style="min-height: 20lh; max-height: 35lh"
-						></textarea>
+						<textarea v-model="description" type="text" name="description" style="min-height: 20lh; max-height: 35lh"></textarea>
 					</div>
 					<div class="confirm-button">
 						<input @change="fileChange" type="file" />

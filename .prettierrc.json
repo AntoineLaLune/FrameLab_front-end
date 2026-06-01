@@ -1,5 +1,6 @@
 {
 	"useTabs": true,
+	"printWidth": 2048,
 	"overrides": [
 		{
 			"files": "*.vue",

@@ -163,6 +163,18 @@
 		border-width: 0px;
 		outline-width: 2px;
 	}
+	input[type="number"] {
+		-webkit-appearance: textfield;
+		-moz-appearance: textfield;
+		appearance: textfield;
+	}
+	input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+	}
+	input[type="number"] {
+		text-align: center;
+	}
 
 	textarea {
 		display: flex;
@@ -215,5 +227,6 @@
 		outline-style: dashed;
 		outline-color: black;
 		outline-width: 2px;
+		width: fit-content;
 	}
 </style>

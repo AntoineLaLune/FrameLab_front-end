@@ -31,13 +31,9 @@
 		}
 	}
 
+	// Function(s)
 	async function register() {
-		const data: RegisterResponse = await apiCall.register(
-			lastName.value,
-			firstName.value,
-			email.value,
-			password.value,
-		);
+		const data: RegisterResponse = await apiCall.register(lastName.value, firstName.value, email.value, password.value);
 
 		info.value = "";
 
@@ -49,10 +45,7 @@
 		}
 
 		if (data.success == false) {
-			if (
-				data.message ==
-				"Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)"
-			) {
+			if (data.message == "Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)") {
 				info.value = data.message;
 				return;
 			}
@@ -65,6 +58,7 @@
 
 		document.location.href = "/";
 	}
+
 	function goBack() {
 		if (linkEmail) {
 			document.location.href = "/login?email=" + linkEmail;

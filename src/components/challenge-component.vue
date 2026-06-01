@@ -1,6 +1,8 @@
 <script setup lang="ts">
+	// Set variable(s)
 	defineProps(["challenge"]);
 
+	// Function(s)
 	function redirectChallenge(id: number) {
 		document.location.href = "/challenge?id=" + id;
 	}
@@ -19,10 +21,7 @@
 			<p class="challenge-description">
 				{{ challenge.description }}
 			</p>
-			<img
-				v-bind:src="`/uploads${challenge.photo_url}`"
-				alt="Challenge Theme Image"
-			/>
+			<img v-bind:src="`/uploads${challenge.photo_url}`" alt="Challenge Theme Image" />
 		</div>
 		<button v-on:click="redirectChallenge(challenge.id)">Voir</button>
 	</div>
@@ -53,7 +52,7 @@
 		display: flex;
 		justify-content: center;
 		text-align: center;
-		padding: 20px 0px 20px 0px;
+		padding: 20px 0px; /* horizontal / vertical */
 
 		width: fit-content;
 		height: fit-content;

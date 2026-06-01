@@ -33,13 +33,7 @@
 
 	async function submit() {
 		if (newPassword.value == null || newPassword.value == "") {
-			const data = await apiCall.editUser(
-				lastName.value,
-				firstName.value,
-				email.value,
-				oldEmail.value,
-				currentPassword.value,
-			);
+			const data = await apiCall.editUser(lastName.value, firstName.value, email.value, oldEmail.value, currentPassword.value);
 
 			if (data.success == false) {
 				isValid.value = data.message;
@@ -50,21 +44,10 @@
 			}
 		}
 		if (newPassword.value !== null && newPassword.value !== "") {
-			const data = await apiCall.editUserWithPassword(
-				lastName.value,
-				firstName.value,
-				email.value,
-				oldEmail.value,
-				newPassword.value,
-				currentPassword.value,
-			);
+			const data = await apiCall.editUserWithPassword(lastName.value, firstName.value, email.value, oldEmail.value, newPassword.value, currentPassword.value);
 
 			if (data.success == false) {
-				if (
-					data.message == "L'adresse email n'existe pas." ||
-					data.message == "L'adresse email est déjà utilisé." ||
-					data.message == "Le mot de passe est invalide."
-				) {
+				if (data.message == "L'adresse email n'existe pas." || data.message == "L'adresse email est déjà utilisé." || data.message == "Le mot de passe est invalide.") {
 					isValid.value = data.message;
 					return;
 				}
@@ -112,11 +95,7 @@
 					</div>
 					<div class="old-password-input-section">
 						<label>Mot de passe actuel *</label>
-						<input
-							v-model="currentPassword"
-							type="password"
-							name="currentPassword"
-						/>
+						<input v-model="currentPassword" type="password" name="currentPassword" />
 					</div>
 					<div class="password-input-section">
 						<label>Nouveau Mot de passe</label>

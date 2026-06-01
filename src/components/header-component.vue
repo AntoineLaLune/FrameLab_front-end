@@ -1,12 +1,7 @@
 <script setup lang="ts">
 	// Import(s)
 	import { onMounted, type Ref, ref, computed } from "vue";
-	import {
-		type _RouterClassic,
-		type RouteLocationNormalizedLoadedGeneric,
-		useRoute,
-		useRouter,
-	} from "vue-router";
+	import { type _RouterClassic, type RouteLocationNormalizedLoadedGeneric, useRoute, useRouter } from "vue-router";
 	import * as apiCall from "./../utils/apiCall.ts";
 
 	// Set variable(s)
@@ -45,6 +40,7 @@
 		}
 	});
 
+	// Function(s)
 	function redirectAccount() {
 		if (!isDisconect) {
 			document.location.href = "/account";
@@ -68,10 +64,7 @@
 				</div>
 			</h1>
 			<div v-if="route.path == '/challenge'">
-				<img
-					v-bind:src="`/uploads${challengeData.photo_url}`"
-					alt="Challenge Theme Image"
-				/>
+				<img v-bind:src="`/uploads${challengeData.photo_url}`" alt="Challenge Theme Image" />
 			</div>
 		</div>
 

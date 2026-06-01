@@ -30,6 +30,10 @@
 	},
 	"fmt": {
 		"useTabs": true,
+		"lineWidth": 2048,
+		"semiColons": true,
+		"singleQuote": false,
+		"proseWrap": "preserve",
 		"exclude": ["*.md"]
 	}
 }
