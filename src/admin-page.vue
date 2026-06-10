@@ -7,7 +7,7 @@
 	import type { UserData, ServerResponse } from "./utils/apiCall.ts";
 
 	// Set variable(s)
-	const { userData } = defineProps<{ userData: UserData }>();
+	const { userData } = defineProps<{ userData: UserData | undefined }>();
 	const accountId: Ref<number | undefined> = ref();
 	const title: Ref<string> = ref("");
 	const description: Ref<string> = ref("");

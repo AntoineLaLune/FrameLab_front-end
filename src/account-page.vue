@@ -5,7 +5,7 @@
 	import type { UserData } from "./utils/apiCall.ts";
 
 	// Set variable(s)
-	const { userData } = defineProps<{ userData: UserData }>();
+	const { userData } = defineProps<{ userData: UserData | undefined }>();
 	const isValid: Ref<string> = ref("");
 	const lastName: Ref<string> = ref("");
 	const firstName: Ref<string> = ref("");

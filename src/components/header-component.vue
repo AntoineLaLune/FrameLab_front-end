@@ -6,7 +6,7 @@
 	import type { UserData } from "./../utils/apiCall";
 
 	// Set variable(s)
-	const { userData } = defineProps<{ userData: UserData }>();
+	const { userData } = defineProps<{ userData: UserData | undefined }>();
 	const account: ComputedRef<string> = computed(() => {
 		if (!userData) return "";
 		return userData.first_name;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 	// Set variable(s)
-	const { challenge } = defineProps<{ challenge: any }>()
-	
+	const { challenge } = defineProps<{ challenge: any }>();
+
 	// Function(s)
 	function redirectChallenge(id: number) {
 		document.location.href = "/challenge?id=" + id;

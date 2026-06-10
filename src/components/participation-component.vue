@@ -6,7 +6,7 @@
 
 	// Set variable(s)
 	const { userData, participation } = defineProps<{
-		userData: UserData;
+		userData: UserData | undefined;
 		participation: any;
 	}>();
 	const creativityNote: Ref<number> = ref(0);

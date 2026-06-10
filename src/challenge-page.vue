@@ -6,7 +6,7 @@
 	import type { UserData } from "./utils/apiCall.ts";
 
 	// Set variable(s)
-	const { userData } = defineProps<{ userData: UserData }>();
+	const { userData } = defineProps<{ userData: UserData | undefined }>();
 	let userId: number | undefined = undefined; // @TODO Fix duplicate
 	const userParticipation: Ref<any> = ref(undefined);
 	const userParticipationStatus: Ref<string> = ref("Chargement...");
@@ -20,9 +20,13 @@
 	// Load participations
 	onMounted(async () => {
 		// User
-		userParticipation.value = await apiCall.getUserParticipation(userData.id, challengeId);
-		if (userParticipation.value == undefined || userParticipation.value == null) {
-			userParticipationStatus.value = "Vous n'avez pas participé.";
+		if (userData != undefined) {
+			userParticipation.value = await apiCall.getUserParticipation(userData.id, challengeId);
+			if (userParticipation.value == undefined || userParticipation.value == null) {
+				userParticipationStatus.value = "Vous n'avez pas participé.";
+			}
+		} else {
+			userParticipationStatus.value = "Vous devez être connecté.";
 		}
 
 		// Users
@@ -31,7 +35,7 @@
 		if (participationsData.value == null || participationsData.value.length == 0) {
 			participationsStatus.value = "Aucune participation.";
 		}
-		if (challengeData.value == null || challengeData.value.length == 0) {
+		if (challengeData.value == undefined || challengeData.value.length == 0) {
 			challengeStatus.value = "Impossible de récupérer le challenge.";
 		}
 	});
@@ -52,7 +56,8 @@
 			<h2 class="not-bold">Participation(s)</h2>
 			<div class="horizontal-scroll-container" v-if="participationsData != null">
 				<div v-for="participation in participationsData">
-					<ParticipationComponent v-if="participation.user_id != userId" v-bind:participation="participation" v-bind:userData="userData" /> // @TODO Fix duplicate
+					<ParticipationComponent v-if="participation.user_id != userId" v-bind:participation="participation" v-bind:userData="userData" />
+					<!-- @TODO Fix duplicate -->
 				</div>
 			</div>
 			<div v-else>
