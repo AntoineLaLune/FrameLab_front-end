@@ -1,22 +1,8 @@
 <script setup lang="ts">
 	// Import(s)
-	import { type Ref, ref, watch } from "vue";
+	import { type Ref, ref } from "vue";
 	import * as apiCall from "./utils/apiCall.ts";
 	import type { UserData } from "./utils/apiCall.ts";
-
-	// Check if the user is connected
-	watch(
-		() => userData,
-		(newUserData) => {
-			if (newUserData !== undefined && newUserData !== null) {
-				lastName.value = newUserData.last_name;
-				firstName.value = newUserData.first_name;
-				email.value = newUserData.email;
-				oldEmail.value = newUserData.email;
-			}
-		},
-		{ immediate: true },
-	);
 
 	// Set variable(s)
 	const { userData } = defineProps<{ userData: UserData }>();
@@ -27,6 +13,14 @@
 	const oldEmail: Ref<string> = ref("");
 	const newPassword: Ref<string> = ref("");
 	const currentPassword: Ref<string> = ref("");
+
+	// Load the user if connected
+	if (userData !== undefined && userData !== null) {
+		lastName.value = userData.last_name;
+		firstName.value = userData.first_name;
+		email.value = userData.email;
+		oldEmail.value = userData.email;
+	}
 
 	// Function(s)
 	async function submit() {

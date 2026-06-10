@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	// Import(s)
-	import { type Ref, ref, watch } from "vue";
+	import { onMounted, type Ref, ref } from "vue";
 	import * as apiCall from "./../utils/apiCall.ts";
 	import type { UserData, Votes, VotesResponse, ServerResponse } from "./../utils/apiCall.ts";
 
@@ -29,13 +29,10 @@
 		info.value = "La note doit être comprise entre 1 et 5.";
 	}
 
-	watch(
-		() => participation,
-		async (newParticipation: Record<string, any> | undefined) => {
-			await getVote(newParticipation);
-		},
-		{ immediate: true },
-	);
+	onMounted(async () => {
+		await getVote(participation);
+	});
+
 	async function getVote(participation: Record<string, any> | undefined) {
 		if (!participation) return;
 
@@ -79,7 +76,6 @@
 	async function remove() {
 		if (participation !== undefined) {
 			const call: ServerResponse | undefined = await apiCall.removeParticipation(participation.id);
-			console.log(call);
 			if (call.success) {
 				isDeleted.value = true;
 			}

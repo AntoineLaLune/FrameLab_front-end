@@ -2,8 +2,6 @@
 	// Set variable(s)
 	const { challenge } = defineProps<{ challenge: any }>()
 	
-	console.log('· challenge-component → challenge',challenge)
-
 	// Function(s)
 	function redirectChallenge(id: number) {
 		document.location.href = "/challenge?id=" + id;

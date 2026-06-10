@@ -88,7 +88,6 @@ export async function getUserParticipation(userId?: number, challengeId?: number
 	const response = await fetch("/api/participations?user_id=" + userId + "&challenge_id=" + challengeId);
 	const data = await response.json();
 	if (data.success == true) {
-		console.log(data.participations[0]);
 		return data.participations[0];
 	} else {
 		return undefined;
@@ -99,7 +98,6 @@ export async function getParticipation(participationId?: number) { // @TODO
 	const response = await fetch("/api/participations/" + participationId);
 	const data = await response.json();
 	if (data.success == true) {
-		console.log(data.participation);
 		return data.participation;
 	} else {
 		return undefined;

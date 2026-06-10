@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	// Import(s)
-	import { type Ref, ref, watch, onMounted } from "vue";
+	import { type Ref, ref, onMounted } from "vue";
 	import ChallengeComponent from "./components/challenge-component.vue";
 	import ParticipationComponent from "./components/participation-component.vue";
 	import * as apiCall from "./utils/apiCall.ts";
@@ -21,18 +21,12 @@
 	const participationsStatus: Ref<string> = ref("Chargement...");
 	const challengeId: Ref<number | undefined> = ref();
 
-	// Check if the user is connected
-	watch(
-		() => userData,
-		(newUserData: any) => {
-			if (newUserData == undefined || newUserData == null) {
-				accountId.value = undefined;
-			} else {
-				accountId.value = newUserData.id;
-			}
-		},
-		{ immediate: true },
-	);
+	// Load the user if connected
+	if (userData == undefined || userData == null) {
+		accountId.value = undefined;
+	} else {
+		accountId.value = userData.id;
+	}
 
 	// Function(s)
 	function formatDate(dateString?: Date) {
@@ -94,7 +88,6 @@
 		if (challengeData.value == null || challengeData.value.length == 0) {
 			challengeStatus.value = "Impossible de récupérer le challenge.";
 		}
-		console.log(challengeData.value);
 	}
 </script>
 

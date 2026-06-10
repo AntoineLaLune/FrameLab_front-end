@@ -8,16 +8,20 @@
 
 	// Set variable(s)
 	const userData: Ref<UserData | undefined> = ref(undefined);
+	const isCheck: Ref<boolean> = ref(false);
 
 	// Load user if session
 	onMounted(async () => {
 		userData.value = await apiCall.getSession();
+		isCheck.value = true;
 	});
 </script>
 
 <template>
-	<Header v-bind:userData="userData" />
-	<RouterView v-bind:userData="userData" />
+	<template v-if="isCheck == true">
+		<Header v-bind:userData="userData" />
+		<RouterView v-bind:userData="userData" />
+	</template>
 </template>
 
 <style>
