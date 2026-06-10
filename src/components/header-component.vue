@@ -1,32 +1,31 @@
 <script setup lang="ts">
 	// Import(s)
-	import { onMounted, type Ref, ref, computed } from "vue";
+	import { onMounted, type Ref, type ComputedRef, ref, computed } from "vue";
 	import { type _RouterClassic, type RouteLocationNormalizedLoadedGeneric, useRoute, useRouter } from "vue-router";
 	import * as apiCall from "./../utils/apiCall.ts";
+	import type { UserData } from "./../utils/apiCall";
 
 	// Set variable(s)
-	const { userData } = defineProps({
-		userData: Object,
-	});
-	const account = computed(() => {
+	const userData: UserData | undefined = defineProps();
+	const account: ComputedRef<string> = computed(() => {
 		if (!userData) return "";
 		return userData.first_name;
 	});
-	const accountId = computed(() => {
-		if (!userData) return "";
+	const accountId: ComputedRef<number> = computed(() => {
+		if (!userData) return -1;
 		return userData.id;
 	});
-	const isDisconect = computed(() => {
+	const isDisconect: ComputedRef<boolean> = computed(() => {
 		if (!userData) return true;
 		return false;
 	});
-	const isHidden = ref(false);
+	const isHidden: Ref<boolean> = ref(false);
 
 	// Load challengeId from params
 	const url: URL = new URL(location.href);
 	const challengeId: number = Number(url.searchParams.get("id"));
 
-	const challengeData: Ref = ref({});
+	const challengeData: Ref<any> = ref({});
 	// Check page loaded
 	const route: RouteLocationNormalizedLoadedGeneric = useRoute();
 	const router: _RouterClassic = useRouter();
@@ -35,7 +34,7 @@
 		if (route.path == "/challenge") {
 			challengeData.value = await apiCall.getChallenge(challengeId);
 		}
-		if (route.path == "/login" || route.path == "/register") {
+		if (route.path == "/login" || route.path == "/register" || route.path == "/account" || route.path == "/admin") {
 			isHidden.value = true;
 		}
 	});
@@ -64,7 +63,7 @@
 				</div>
 			</h1>
 			<div v-if="route.path == '/challenge'">
-				<img v-bind:src="`/uploads${challengeData.photo_url}`" alt="Challenge Theme Image" />
+				<img v-bind:src="`${challengeData.photo_url}`" alt="Challenge Theme Image" />
 			</div>
 		</div>
 

@@ -1,41 +1,36 @@
 <script setup lang="ts">
-	import ParticipationComponent from "./components/participation-component.vue";
-
-	import * as apiCall from "./utils/apiCall.ts";
-
+	// Import(s)
 	import { onMounted, type Ref, ref, watch } from "vue";
+	import ParticipationComponent from "./components/participation-component.vue";
+	import * as apiCall from "./utils/apiCall.ts";
+	import type { UserData } from "./utils/apiCall.ts";
 
-	const { userData } = defineProps({
-		userData: Object,
-	});
-
-	const userId: Ref = ref(-1);
-	const userParticipation: Ref = ref({});
-	const userParticipationStatus: Ref = ref("Chargement...");
+	// Set variable(s)
+	const userData: UserData | undefined = defineProps();
+	const userId: Ref<number> = ref(-1);
+	const userParticipation: Ref<any> = ref({});
+	const userParticipationStatus: Ref<string> = ref("Chargement...");
+	const challengeData: Ref<any> = ref({});
+	const participationsData: Ref<Array<any>> = ref([]);
+	const challengeStatus: Ref<string> = ref("Chargement...");
+	const participationsStatus: Ref<string> = ref("Chargement...");
+	const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
+	const challengeId: number = Number(urlParams.get("id"));
 
 	// Get the user id, and load the user participation
 	watch(
 		() => userData,
 		async (newUserData) => {
-			if (newUserData != undefined && newUserData != null) {
+			if (newUserData.id != undefined && newUserData.id != null) {
 				userId.value = newUserData.id;
 			}
-
 			userParticipation.value = await apiCall.getUserParticipation(userId.value, challengeId);
-			if (userParticipation.value == null) {
+			if (userParticipation.value == undefined || userParticipation.value == null) {
 				userParticipationStatus.value = "Vous n'avez pas participé.";
 			}
 		},
 		{ immediate: true },
 	);
-
-	const challengeData: Ref = ref({});
-	const participationsData: Ref = ref([]);
-	const challengeStatus: Ref = ref("Chargement...");
-	const participationsStatus: Ref = ref("Chargement...");
-
-	const urlParams: URLSearchParams = new URLSearchParams(window.location.search);
-	const challengeId: number = Number(urlParams.get("id"));
 
 	// Load participations
 	onMounted(async () => {
@@ -55,7 +50,7 @@
 		<!-- User Participation -->
 		<h2 class="not-bold">Votre participation</h2>
 		<div class="horizontal-scroll-container" style="justify-content: center" v-if="userParticipation">
-			<ParticipationComponent v-bind:participation="userParticipation" />
+			<ParticipationComponent v-bind:participation="userParticipation" v-bind:userData="userData" />
 		</div>
 		<div class="horizontal-scroll-container" style="justify-content: center" v-else>
 			<p>{{ userParticipationStatus }}</p>
@@ -65,7 +60,7 @@
 			<h2 class="not-bold">Participation(s)</h2>
 			<div class="horizontal-scroll-container" v-if="participationsData != null">
 				<div v-for="participation in participationsData">
-					<ParticipationComponent v-if="participation.user_id != userId" v-bind:participation="participation" />
+					<ParticipationComponent v-if="participation.user_id != userId" v-bind:participation="participation" v-bind:userData="userData" />
 				</div>
 			</div>
 			<div v-else>

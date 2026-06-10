@@ -2,29 +2,16 @@
 	// Import(s)
 	import { type Ref, ref } from "vue";
 	import * as apiCall from "./utils/apiCall";
-
-	// Set interface(s)
-	interface LoginResponse {
-		success?: boolean;
-		data?: {
-			id: number;
-			email: string;
-			last_name: string;
-			first_name: string;
-			is_admin: number;
-			inscription_date: Date;
-		};
-		message?: string;
-	}
+	import type { LoginResponse } from "./utils/apiCall";
 
 	// Set variable(s)
-	const email: Ref = ref("");
-	const password: Ref = ref("");
-	const info: Ref = ref("");
+	const email: Ref<string> = ref("");
+	const password: Ref<string> = ref("");
+	const info: Ref<string> = ref("");
 
 	// Load email from params
 	const url: URL = new URL(location.href);
-	const linkEmail = url.searchParams.get("email");
+	const linkEmail: string | null = url.searchParams.get("email");
 	if (linkEmail) {
 		email.value = linkEmail;
 	}
@@ -39,14 +26,14 @@
 
 	// Function(s)
 	async function login() {
-		const data: LoginResponse = await apiCall.login(email.value, password.value);
+		const call: LoginResponse = await apiCall.login(email.value, password.value);
 
-		if (data.success == false) {
-			if (data.message == "L'adresse email n'existe pas.") {
+		if (call.success == false) {
+			if (call.message == "L'adresse email n'existe pas.") {
 				document.location.href = "/register?email=" + email.value;
 				return;
 			} else {
-				info.value = data.message;
+				info.value = call.message;
 				return;
 			}
 		}

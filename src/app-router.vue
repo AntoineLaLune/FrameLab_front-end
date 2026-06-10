@@ -4,9 +4,10 @@
 	import { RouterView } from "vue-router";
 	import Header from "./components/header-component.vue";
 	import * as apiCall from "./utils/apiCall.ts";
+	import type { UserData } from "./utils/apiCall";
 
 	// Set variable(s)
-	const userData: Ref = ref(null);
+	const userData: Ref<UserData | undefined> = ref();
 
 	// Load user if session
 	onMounted(async () => {
@@ -15,8 +16,8 @@
 </script>
 
 <template>
-	<Header v-bind:userData="userData" />
-	<RouterView v-bind:userData="userData" />
+	<Header v-if="userData" v-bind="userData" />
+	<RouterView v-if="userData" v-bind:userData="userData" />
 </template>
 
 <style>
@@ -223,10 +224,42 @@
 	}
 
 	img {
-		aspect-ratio: auto;
 		outline-style: dashed;
 		outline-color: black;
 		outline-width: 2px;
-		width: fit-content;
+	}
+
+	.admin-element {
+		outline-style: dashed;
+		outline-width: 4px;
+		outline-color: red;
+	}
+	.admin-div-element {
+		border-style: dashed;
+		border-width: 4px;
+		border-color: red;
+	}
+	.hide {
+		display: none;
+	}
+	.row {
+		display: flex;
+		flex-direction: row;
+		* {
+			margin-inline: 5px;
+		}
+	}
+	.column {
+		display: flex;
+		flex-direction: column;
+		* {
+			margin-block: 5px;
+		}
+	}
+	.rm-space {
+		* {
+			margin-inline: 1px;
+			margin-block: 1px;
+		}
 	}
 </style>

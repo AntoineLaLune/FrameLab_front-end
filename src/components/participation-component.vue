@@ -2,19 +2,21 @@
 	// Import(s)
 	import { type Ref, ref, watch } from "vue";
 	import * as apiCall from "./../utils/apiCall.ts";
-	import type { Votes, VotesResponse } from "./../utils/apiCall.ts";
+	import type { UserData, Votes, VotesResponse, ServerResponse } from "./../utils/apiCall.ts";
 
 	// Set variable(s)
-	const { participation } = defineProps({
-		participation: Object,
-	});
-	const creativityNote: Ref = ref(0);
-	const technicalNote: Ref = ref(0);
-	const respectThemeNote: Ref = ref(0);
-	const info: Ref = ref("");
-	const hasVotes: Ref = ref();
-	const isVoted: Ref = ref(false);
+	const { userData, participation } = defineProps<{
+		userData: UserData | undefined;
+		participation: any;
+	}>();
+	const creativityNote: Ref<number> = ref(0);
+	const technicalNote: Ref<number> = ref(0);
+	const respectThemeNote: Ref<number> = ref(0);
+	const info: Ref<string> = ref<string>("");
+	const hasVotes: Ref<boolean> = ref(false);
+	const isVoted: Ref<boolean> = ref(false);
 	const validNoteNumber: Array<number> = [1, 2, 3, 4, 5];
+	const isDeleted: Ref<boolean> = ref(false);
 
 	// Function(s)
 	function checkNoteNumber(note: number) {
@@ -46,8 +48,6 @@
 					respectThemeNote.value = Math.round(votes.respectThemeNote * 100) / 100;
 					hasVotes.value = votes.hasVotes;
 					isVoted.value = true;
-				} else {
-					isVoted.value = false;
 				}
 			} catch (error) {
 				console.error("Erreur lors de la récupération des votes :", error);
@@ -65,9 +65,8 @@
 	async function submitVote() {
 		if (participation !== undefined) {
 			const call: VotesResponse | undefined = await apiCall.postVote(participation.id, creativityNote.value, technicalNote.value, respectThemeNote.value);
-			const message = call?.message;
-			if (!call?.success) {
-				info.value = message;
+			if (!call?.success && call?.message) {
+				info.value = call?.message;
 			} else {
 				await refresh();
 				info.value = "";
@@ -76,60 +75,73 @@
 			info.value = "Une erreur est survenue à l'envoie de votre vote";
 		}
 	}
+
+	async function remove() {
+		if (participation !== undefined) {
+			const call: ServerResponse | undefined = await apiCall.removeParticipation(participation.id);
+			console.log(call);
+			if (call.success) {
+				isDeleted.value = true;
+			}
+		}
+	}
 </script>
 
 <template>
-	<div v-if="participation" class="participation-container">
-		<div class="top">
-			<h2>
-				<span>{{ participation.first_name }}{{ participation.user_id }}</span
-				><span class="not-bold">Participation</span>
-			</h2>
-			<p>Date de mise en ligne : {{ participation.created }}</p>
-		</div>
-		<div class="center">
-			<div
-				v-bind:class="{
-					'image-section': !isVoted,
-					'image-section-vote': isVoted,
-				}"
-			>
-				<img v-bind:src="`/uploads${participation.photo_url}`" alt="Image de la participation" />
-				<div v-if="isVoted && hasVotes" class="participation-vote-section">
-					<span>Créativité: {{ creativityNote }} | Technique: {{ technicalNote }} | Respect: {{ respectThemeNote }}</span>
+	<body v-bind:class="{ hide: isDeleted }">
+		<div v-if="participation" class="participation-container">
+			<div class="top">
+				<h2>
+					<span>{{ participation.first_name }}{{ participation.user_id }}</span
+					><span class="not-bold">Participation</span>
+				</h2>
+				<p>Date de mise en ligne : {{ participation.created }}</p>
+			</div>
+			<div class="center">
+				<div
+					v-bind:class="{
+						'image-section': !isVoted,
+						'image-section-vote': isVoted,
+					}"
+				>
+					<img v-bind:src="`${participation.photo_url}`" alt="Image de la participation" />
+					<div v-if="isVoted && hasVotes" class="participation-vote-section">
+						<span>Créativité: {{ creativityNote }} | Technique: {{ technicalNote }} | Respect: {{ respectThemeNote }}</span>
+					</div>
+					<div v-if="isVoted && !hasVotes" class="participation-vote-section">
+						<p style="font-style: italic">Votre participation n'a pas encore reçu de vote</p>
+					</div>
 				</div>
-				<div v-if="isVoted && !hasVotes" class="participation-vote-section">
-					<p style="font-style: italic">Votre participation n'a pas encore reçu de vote</p>
+				<div v-if="!isVoted">
+					<div class="user-vote-section">
+						<div class="single-vote-section">
+							<label> Créativité </label>
+							<input v-model="creativityNote" v-on:input="checkNoteNumber(creativityNote)" name="Votez de 1 à 5" type="number" maxlength="1" min="1" max="5" />
+						</div>
+						<div class="single-vote-section">
+							<label> Technique </label>
+							<input v-model="technicalNote" v-on:input="checkNoteNumber(technicalNote)" name="Votez de 1 à 5" type="number" maxlength="1" min="1" max="5" />
+						</div>
+						<div class="single-vote-section">
+							<label> Respect </label>
+							<input v-model="respectThemeNote" v-on:input="checkNoteNumber(respectThemeNote)" name="Votez de 1 à 5" type="number" maxlength="1" min="1" max="5" />
+						</div>
+					</div>
+					<div>
+						<button v-on:click="submitVote">Je vote</button>
+					</div>
+					<p class="low-warning">{{ info }}</p>
 				</div>
 			</div>
-			<div v-if="!isVoted">
-				<div class="user-vote-section">
-					<div class="single-vote-section">
-						<label> Créativité </label>
-						<input v-model="creativityNote" v-on:input="checkNoteNumber(creativityNote)" name="Votez de 1 à 5" type="number" maxlength="1" min="1" max="5" />
-					</div>
-					<div class="single-vote-section">
-						<label> Technique </label>
-						<input v-model="technicalNote" v-on:input="checkNoteNumber(technicalNote)" name="Votez de 1 à 5" type="number" maxlength="1" min="1" max="5" />
-					</div>
-					<div class="single-vote-section">
-						<label> Respect </label>
-						<input v-model="respectThemeNote" v-on:input="checkNoteNumber(respectThemeNote)" name="Votez de 1 à 5" type="number" maxlength="1" min="1" max="5" />
-					</div>
-				</div>
-				<div>
-					<button v-on:click="submitVote">Je vote</button>
-				</div>
-				<p class="low-warning">{{ info }}</p>
+			<div class="bottom column">
+				<button>Voir les commentaires</button>
+				<button v-if="userData && userData.is_admin" v-on:click="remove" class="admin-element">Retirer</button>
 			</div>
 		</div>
-		<div class="bottom">
-			<button>Voir les commentaires</button>
+		<div v-else class="participation-container">
+			<p>Chargement...</p>
 		</div>
-	</div>
-	<div v-else class="participation-container">
-		<p>Chargement...</p>
-	</div>
+	</body>
 </template>
 
 <style scoped>

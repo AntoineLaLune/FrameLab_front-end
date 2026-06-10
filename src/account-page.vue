@@ -2,6 +2,7 @@
 	// Import(s)
 	import { type Ref, ref, watch } from "vue";
 	import * as apiCall from "./utils/apiCall.ts";
+	import type { UserData } from "./utils/apiCall.ts";
 
 	// Check if the user is connected
 	watch(
@@ -18,16 +19,14 @@
 	);
 
 	// Set variable(s)
-	const { userData } = defineProps({
-		userData: Object,
-	});
-	const isValid: Ref = ref("");
-	const lastName: Ref = ref("");
-	const firstName: Ref = ref("");
-	const email: Ref = ref("");
-	const oldEmail: Ref = ref("");
-	const newPassword: Ref = ref("");
-	const currentPassword: Ref = ref("");
+	const userData: UserData | undefined = defineProps();
+	const isValid: Ref<string> = ref("");
+	const lastName: Ref<string> = ref("");
+	const firstName: Ref<string> = ref("");
+	const email: Ref<string> = ref("");
+	const oldEmail: Ref<string> = ref("");
+	const newPassword: Ref<string> = ref("");
+	const currentPassword: Ref<string> = ref("");
 
 	// Function(s)
 	async function submit() {
@@ -69,6 +68,14 @@
 		await apiCall.logout();
 		document.location.href = "/";
 	}
+
+	function goAdmin() {
+		document.location.href = "/admin";
+	}
+
+	function goBack() {
+		document.location.href = "/";
+	}
 </script>
 
 <template>
@@ -107,20 +114,27 @@
 				</div>
 			</div>
 			<div class="bottom">
-				<div class="botton-section">
+				<div class="row">
 					<button v-on:click="submit" type="submit">Modifier</button>
-				</div>
-				<div class="botton-section">
-					<button v-on:click="logout">Se déconnecter</button>
 				</div>
 				<div class="is-valid-section">
 					<p class="low-warning">{{ isValid }}</p>
 				</div>
+				<div class="row">
+					<button v-on:click="goBack">Retour</button>
+					<button v-if="userData.is_admin" v-on:click="goAdmin" class="admin-element">Administration</button>
+					<button v-on:click="logout">Se déconnecter</button>
+				</div>
 			</div>
 		</div>
 		<div v-else class="account-container">
-			<span>Êtes vous connectez ?</span>
-			<button v-on:click="login">Me connectez</button>
+			<div class="center">
+				<span>Êtes vous connectez ?</span>
+				<div class="row">
+					<button v-on:click="goBack">Retour</button>
+					<button v-on:click="login">Me connectez</button>
+				</div>
+			</div>
 		</div>
 	</body>
 </template>

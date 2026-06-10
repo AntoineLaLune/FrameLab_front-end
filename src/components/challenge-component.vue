@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	// Set variable(s)
-	defineProps(["challenge"]);
+	const challenge: any = defineProps();
 
 	// Function(s)
 	function redirectChallenge(id: number) {
@@ -21,7 +21,7 @@
 			<p class="challenge-description">
 				{{ challenge.description }}
 			</p>
-			<img v-bind:src="`/uploads${challenge.photo_url}`" alt="Challenge Theme Image" />
+			<img v-bind:src="`${challenge.photo_url}`" alt="Challenge Theme Image" />
 		</div>
 		<button v-on:click="redirectChallenge(challenge.id)">Voir</button>
 	</div>

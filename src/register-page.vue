@@ -2,19 +2,14 @@
 	// Import(s)
 	import { type Ref, ref } from "vue";
 	import * as apiCall from "./utils/apiCall";
-
-	// Set interface(s)
-	interface RegisterResponse {
-		success?: boolean;
-		message?: string;
-	}
+	import type { RegisterResponse } from "./utils/apiCall";
 
 	// Set variable(s)
-	const lastName: Ref = ref("");
-	const firstName: Ref = ref("");
-	const email: Ref = ref("");
-	const password: Ref = ref("");
-	const info: Ref = ref("");
+	const lastName: Ref<string> = ref("");
+	const firstName: Ref<string> = ref("");
+	const email: Ref<string> = ref("");
+	const password: Ref<string> = ref("");
+	const info: Ref<string> = ref("");
 
 	// Load email from params
 	const url: URL = new URL(location.href);
@@ -33,25 +28,25 @@
 
 	// Function(s)
 	async function register() {
-		const data: RegisterResponse = await apiCall.register(lastName.value, firstName.value, email.value, password.value);
+		const call: RegisterResponse = await apiCall.register(lastName.value, firstName.value, email.value, password.value);
 
 		info.value = "";
 
-		if (data.success == false) {
-			if (data.message == "Le format de l'adresse email est invalide.") {
-				info.value = data.message;
+		if (call.success == false) {
+			if (call.message == "Le format de l'adresse email est invalide.") {
+				info.value = call.message;
 				return;
 			}
 		}
 
-		if (data.success == false) {
-			if (data.message == "Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)") {
-				info.value = data.message;
+		if (call.success == false) {
+			if (call.message == "Le mot de passe doit faire au moins 8 caractères de long et inclure une majuscule, un minuscule, un chiffre, et un caractère speciale (#?!@$%^&*-.,)") {
+				info.value = call.message;
 				return;
 			}
 		}
 
-		if (data.success == false) {
+		if (call.success == false) {
 			info.value = "Oups, quelque chose c'est mal passé !";
 			return;
 		}

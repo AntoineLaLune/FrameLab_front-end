@@ -12,13 +12,13 @@
 	"imports": {
 		"@deno/vite-plugin": "npm:@deno/vite-plugin@^2.0.2",
 		"prettier": "npm:prettier@^3.8.3",
-		"vite": "npm:vite@^8.0.14",
+		"vite": "npm:vite@^8.0.16",
 		"@vitejs/plugin-vue": "npm:@vitejs/plugin-vue@^6.0.7",
 		"vue": "npm:vue@^3.5.35",
-		"vue-tsc": "npm:vue-tsc@^3.3.2",
+		"vue-tsc": "npm:vue-tsc@^3.3.3",
 		"vue-router": "npm:vue-router@^5.1.0",
 		"@vue/tsconfig": "npm:@vue/tsconfig@^0.9.1",
-		"@vue/typescript-plugin": "npm:@vue/typescript-plugin@^3.3.2",
+		"@vue/typescript-plugin": "npm:@vue/typescript-plugin@^3.3.3",
 		"typescript": "npm:typescript@^6.0.3",
 		"@types/node": "npm:@types/node@^25.9.1"
 	},

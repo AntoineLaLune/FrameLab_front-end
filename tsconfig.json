@@ -25,6 +25,7 @@
 
 		/* Règles strictes et Qualité de code (Linting) */
 		"strict": true,
+		"noImplicitAny": true,
 		"noUncheckedIndexedAccess": true,
 		"exactOptionalPropertyTypes": true,
 		"noUnusedLocals": true,

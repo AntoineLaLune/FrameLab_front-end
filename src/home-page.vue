@@ -1,15 +1,16 @@
 <script setup lang="ts">
+	// Import(s)
+	import { onMounted, type Ref, ref } from "vue";
 	import ChallengeComponent from "./components/challenge-component.vue";
-
 	import * as apiCall from "./utils/apiCall.ts";
 
-	import { onMounted, type Ref, ref } from "vue";
+	// Set variable(s)
+	const currentChallengeData: Ref<Array<any>> = ref([]);
+	const archiveChallengesData: Ref<Array<any>> = ref([]);
+	const currentStatus: Ref<string> = ref("Chargement...");
+	const archiveStatus: Ref<string> = ref("Chargement...");
 
-	const currentChallengeData: Ref = ref([]);
-	const archiveChallengesData: Ref = ref([]);
-	const currentStatus: Ref = ref("Chargement...");
-	const archiveStatus: Ref = ref("Chargement...");
-
+	// Load Challenge(s)
 	onMounted(async () => {
 		currentChallengeData.value = await apiCall.getCurrentChallenge();
 		archiveChallengesData.value = await apiCall.getArchivesChallenges();
