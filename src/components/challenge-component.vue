@@ -1,6 +1,8 @@
 <script setup lang="ts">
 	// Set variable(s)
-	const challenge: any = defineProps();
+	const { challenge } = defineProps<{ challenge: any }>()
+	
+	console.log('· challenge-component → challenge',challenge)
 
 	// Function(s)
 	function redirectChallenge(id: number) {

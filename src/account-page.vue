@@ -19,7 +19,7 @@
 	);
 
 	// Set variable(s)
-	const userData: UserData | undefined = defineProps();
+	const { userData } = defineProps<{ userData: UserData }>();
 	const isValid: Ref<string> = ref("");
 	const lastName: Ref<string> = ref("");
 	const firstName: Ref<string> = ref("");

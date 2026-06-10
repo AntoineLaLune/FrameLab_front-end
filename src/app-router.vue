@@ -7,7 +7,7 @@
 	import type { UserData } from "./utils/apiCall";
 
 	// Set variable(s)
-	const userData: Ref<UserData | undefined> = ref();
+	const userData: Ref<UserData | undefined> = ref(undefined);
 
 	// Load user if session
 	onMounted(async () => {
@@ -16,8 +16,8 @@
 </script>
 
 <template>
-	<Header v-if="userData" v-bind="userData" />
-	<RouterView v-if="userData" v-bind:userData="userData" />
+	<Header v-bind:userData="userData" />
+	<RouterView v-bind:userData="userData" />
 </template>
 
 <style>

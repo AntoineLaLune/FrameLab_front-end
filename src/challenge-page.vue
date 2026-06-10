@@ -6,7 +6,7 @@
 	import type { UserData } from "./utils/apiCall.ts";
 
 	// Set variable(s)
-	const userData: UserData | undefined = defineProps();
+	const { userData } = defineProps<{ userData: UserData }>();
 	const userId: Ref<number> = ref(-1);
 	const userParticipation: Ref<any> = ref({});
 	const userParticipationStatus: Ref<string> = ref("Chargement...");

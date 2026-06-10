@@ -38,42 +38,72 @@ export interface Votes {
 export async function getChallenge(id?: number) { // @TODO
 	const response = await fetch("/api/challenges/" + id);
 	const data = await response.json();
-	return data.challenge;
+	if (data.success == true) {
+		return data.challenge;
+	} else {
+		return undefined;
+	}
 }
 
 export async function getCurrentChallenge() { // @TODO
 	const response = await fetch("/api/challenges/current");
 	const data = await response.json();
-	return data.challenge;
+	if (data.success == true) {
+		return data.challenge;
+	} else {
+		return undefined;
+	}
 }
 
 export async function getArchiveChallenge(number?: number) { // @TODO
 	const response = await fetch("/api/challenges/archive/" + number);
 	const data = await response.json();
-	return data.challenges;
+	if (data.success == true) {
+		return data.challenge;
+	} else {
+		return undefined;
+	}
 }
 export async function getArchivesChallenges() { // @TODO
 	const response = await fetch("/api/challenges/archives?rand=true&limit=10");
 	const data = await response.json();
-	return data.challenges;
+	if (data.success == true) {
+		return data.challenges;
+	} else {
+		return undefined;
+	}
 }
 
 export async function getParticipationsByChallengeId(challengeId?: number) { // @TODO
 	const response = await fetch("/api/participations?limit=50&challenge_id=" + challengeId);
 	const data = await response.json();
-	return data.participations;
+	if (data.success == true) {
+		return data.participations;
+	} else {
+		return undefined;
+	}
 }
 
 export async function getUserParticipation(userId?: number, challengeId?: number) { // @TODO
 	const response = await fetch("/api/participations?user_id=" + userId + "&challenge_id=" + challengeId);
 	const data = await response.json();
-	return data.participations[0];
+	if (data.success == true) {
+		console.log(data.participations[0]);
+		return data.participations[0];
+	} else {
+		return undefined;
+	}
 }
 
 export async function getParticipation(participationId?: number) { // @TODO
 	const response = await fetch("/api/participations/" + participationId);
 	const data = await response.json();
-	return data.participation;
+	if (data.success == true) {
+		console.log(data.participation);
+		return data.participation;
+	} else {
+		return undefined;
+	}
 }
 
 export async function getSession(): Promise<UserData | undefined> {
